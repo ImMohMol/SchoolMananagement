@@ -1,4 +1,6 @@
 package com.schoolmanagement.schoolmanangemenet.service.interfaces;
 
-public interface IFacultyService extends ICrudService {
+import com.schoolmanagement.schoolmanangemenet.model.Faculty;
+
+public interface IFacultyService extends ICrudService<Faculty> {
 }

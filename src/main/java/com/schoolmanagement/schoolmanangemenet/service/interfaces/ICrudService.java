@@ -1,11 +1,13 @@
 package com.schoolmanagement.schoolmanangemenet.service.interfaces;
 
-public interface ICrudService {
-    void create ();
+import java.util.List;
 
-    void read ();
+public interface ICrudService<T> {
+    Boolean create (T object);
 
-    void update ();
+    List<T> read ();
 
-    void delete ();
+    Boolean update (T object);
+
+    Boolean delete (T object);
 }
