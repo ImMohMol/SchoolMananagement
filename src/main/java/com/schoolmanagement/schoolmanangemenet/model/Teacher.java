@@ -16,4 +16,8 @@ public class Teacher {
     private String nationalCode;
     @ManyToMany (mappedBy = "teachers", fetch = FetchType.LAZY)
     private List<Lesson> lessons;
+    @ManyToMany (fetch = FetchType.LAZY)
+    @JoinTable (name = "teacher_students", joinColumns = @JoinColumn (name = "student_no"), inverseJoinColumns =
+    @JoinColumn (name = "teacher_id"))
+    private List<Student> students;
 }
