@@ -10,8 +10,8 @@ public class Lesson {
     private Integer id;
     @Column (unique = true, nullable = false)
     private String name;
-    @ManyToMany
-    @JoinTable (name = "lesson_teacher", joinColumns = @JoinColumn (name = "teacher_id", referencedColumnName =
-            "personal_no"), inverseJoinColumns = @JoinColumn (name = "lesson_id", referencedColumnName = "id"))
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable (name = "lesson_teacher", joinColumns = @JoinColumn (name = "teacher_id"),
+            inverseJoinColumns = @JoinColumn (name = "lesson_id"))
     private List<Teacher> teachers;
 }
