@@ -1,12 +1,14 @@
 package com.schoolmanagement.schoolmanangemenet.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
-public class Student {
+public class Teacher {
     @Id
-    @Column (unique = true, nullable = false, length = 7)
-    private String studentNo;
+    @Column (unique = true, nullable = false)
+    private String personalNo;
     @Column (nullable = false)
     private String firstName;
     @Column (nullable = false)
