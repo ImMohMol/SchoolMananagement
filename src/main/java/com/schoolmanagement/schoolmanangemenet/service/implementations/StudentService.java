@@ -28,7 +28,6 @@ public class StudentService implements IStudentService {
 
     @Override
     public Boolean create (CreateStudentDTO createStudentDTO) {
-        // finding the student using the student nationalCode!
         Optional<Student> handler = this.studentRepository.findByNationalCode(createStudentDTO.getNationalCode());
         if (handler.isPresent()) {
             throw new ApiRequestException("This student exists in the database and cant insert it again!");
