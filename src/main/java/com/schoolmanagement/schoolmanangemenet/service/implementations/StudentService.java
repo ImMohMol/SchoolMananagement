@@ -45,7 +45,13 @@ public class StudentService implements IStudentService {
 
     @Override
     public Boolean update (UpdateStudentDTO updateStudentDTO) {
-
+        Optional<Student> handler = this.studentRepository.findById(updateStudentDTO.getStudentNo());
+        if (handler.isPresent()) {
+            this.studentRepository.save(Objects.requireNonNull(GeneralMapper.convert(updateStudentDTO, Student.class)));
+            return true;
+        } else {
+            throw new IllegalStateException("This student does not exist in the database!");
+        }
     }
 
     @Override
