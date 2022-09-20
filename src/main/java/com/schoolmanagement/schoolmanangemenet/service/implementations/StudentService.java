@@ -56,6 +56,12 @@ public class StudentService implements IStudentService {
 
     @Override
     public Boolean delete (DeleteStudentDTO deleteStudentDTO) {
-
+        Optional<Student> handler = this.studentRepository.findById(deleteStudentDTO.getStudentNo());
+        if (handler.isPresent()) {
+            this.studentRepository.delete(Objects.requireNonNull(GeneralMapper.convert(deleteStudentDTO, Student.class)));
+            return true;
+        } else {
+            throw new IllegalStateException("This student does not exist in the database");
+        }
     }
 }
