@@ -11,6 +11,7 @@ import com.schoolmanagement.schoolmanangemenet.service.interfaces.IStudentServic
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -37,7 +38,9 @@ public class StudentService implements IStudentService {
 
     @Override
     public List<ReadStudentsDTO> read () {
-
+        List<ReadStudentsDTO> receivedStudents = new ArrayList<>();
+        this.studentRepository.findAll().forEach((student -> receivedStudents.add(GeneralMapper.convert(student, ReadStudentsDTO.class))));
+        return receivedStudents;
     }
 
     @Override
