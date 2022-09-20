@@ -11,6 +11,8 @@ import com.schoolmanagement.schoolmanangemenet.service.interfaces.IStudentServic
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 public class StudentService implements IStudentService {
     private final IStudentRepository studentRepository;
@@ -22,7 +24,16 @@ public class StudentService implements IStudentService {
 
     @Override
     public Boolean create (CreateStudentDTO createStudentDTO) {
-        
+        // finding the student using the student nationalCode!
+        Optional<Student> handler = this.studentRepository.findByNationalCode(createStudentDTO.getNationalCode());
+        if (handler.isPresent()) {
+            // TODO: throw exception here to handle the existing student!
+            return false;
+        } else {
+            Student savedStudent =
+                    this.studentRepository.save(Objects.requireNonNull(GeneralMapper.convert(createStudentDTO, Student.class)));
+            return true;
+        }
     }
 
     @Override

@@ -11,14 +11,16 @@ import java.util.List;
 
 @Component
 public class GeneralMapper {
-    public static <TSource, TDestination> void convert (TSource source, Type destinationType) {
+    public static <TSource, TDestination> TDestination convert (TSource source, Type destinationType) {
         try {
             TDestination result = (TDestination) Class.forName(destinationType.getTypeName());
             List<Method> sourceAccessorMethods = createAccessorMethods(source, true);
             List<Method> destinationAccessorMethods = createAccessorMethods(result, false);
             invokeMethods(sourceAccessorMethods, destinationAccessorMethods, source, result);
+            return result;
         } catch (ClassNotFoundException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+            // TODO: throw new exception here to handle bad things in converting models to dto and dto to models!
+            return null;
         }
     }
 
