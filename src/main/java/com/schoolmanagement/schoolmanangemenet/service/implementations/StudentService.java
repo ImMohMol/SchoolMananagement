@@ -9,6 +9,7 @@ import com.schoolmanagement.schoolmanangemenet.model.dto.student.UpdateStudentDT
 import com.schoolmanagement.schoolmanangemenet.repository.IStudentRepository;
 import com.schoolmanagement.schoolmanangemenet.service.interfaces.IStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 
 import java.util.List;
 import java.util.Objects;
@@ -27,11 +28,9 @@ public class StudentService implements IStudentService {
         // finding the student using the student nationalCode!
         Optional<Student> handler = this.studentRepository.findByNationalCode(createStudentDTO.getNationalCode());
         if (handler.isPresent()) {
-            // TODO: throw exception here to handle the existing student!
-            return false;
+            throw new DuplicateKeyException("This student exists in the database and cant insert it again!");
         } else {
-            Student savedStudent =
-                    this.studentRepository.save(Objects.requireNonNull(GeneralMapper.convert(createStudentDTO, Student.class)));
+            this.studentRepository.save(Objects.requireNonNull(GeneralMapper.convert(createStudentDTO, Student.class)));
             return true;
         }
     }
