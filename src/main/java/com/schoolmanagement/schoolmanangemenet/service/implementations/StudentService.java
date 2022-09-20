@@ -1,5 +1,6 @@
 package com.schoolmanagement.schoolmanangemenet.service.implementations;
 
+import com.schoolmanagement.schoolmanangemenet.exception.ApiRequestException;
 import com.schoolmanagement.schoolmanangemenet.model.Student;
 import com.schoolmanagement.schoolmanangemenet.model.dto.mapper.GeneralMapper;
 import com.schoolmanagement.schoolmanangemenet.model.dto.student.CreateStudentDTO;
@@ -9,13 +10,14 @@ import com.schoolmanagement.schoolmanangemenet.model.dto.student.UpdateStudentDT
 import com.schoolmanagement.schoolmanangemenet.repository.IStudentRepository;
 import com.schoolmanagement.schoolmanangemenet.service.interfaces.IStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+@Service
 public class StudentService implements IStudentService {
     private final IStudentRepository studentRepository;
 
@@ -29,7 +31,7 @@ public class StudentService implements IStudentService {
         // finding the student using the student nationalCode!
         Optional<Student> handler = this.studentRepository.findByNationalCode(createStudentDTO.getNationalCode());
         if (handler.isPresent()) {
-            throw new DuplicateKeyException("This student exists in the database and cant insert it again!");
+            throw new ApiRequestException("This student exists in the database and cant insert it again!");
         } else {
             this.studentRepository.save(Objects.requireNonNull(GeneralMapper.convert(createStudentDTO, Student.class)));
             return true;
@@ -50,7 +52,7 @@ public class StudentService implements IStudentService {
             this.studentRepository.save(Objects.requireNonNull(GeneralMapper.convert(updateStudentDTO, Student.class)));
             return true;
         } else {
-            throw new IllegalStateException("This student does not exist in the database!");
+            throw new ApiRequestException("This student does not exist in the database!");
         }
     }
 
@@ -61,7 +63,7 @@ public class StudentService implements IStudentService {
             this.studentRepository.delete(Objects.requireNonNull(GeneralMapper.convert(deleteStudentDTO, Student.class)));
             return true;
         } else {
-            throw new IllegalStateException("This student does not exist in the database");
+            throw new ApiRequestException("This student does not exist in the database");
         }
     }
 }

@@ -13,14 +13,13 @@ import java.util.List;
 public class GeneralMapper {
     public static <TSource, TDestination> TDestination convert (TSource source, Type destinationType) {
         try {
-            TDestination result = (TDestination) Class.forName(destinationType.getTypeName());
+            TDestination result = (TDestination) Class.forName(destinationType.getTypeName()).newInstance();
             List<Method> sourceAccessorMethods = createAccessorMethods(source, true);
             List<Method> destinationAccessorMethods = createAccessorMethods(result, false);
             invokeMethods(sourceAccessorMethods, destinationAccessorMethods, source, result);
             return result;
-        } catch (ClassNotFoundException | IllegalAccessException | InvocationTargetException e) {
-            // TODO: throw new exception here to handle bad things in converting models to dto and dto to models!
-            return null;
+        } catch (ClassNotFoundException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+            throw new IllegalStateException("There was an error while converting models to each other!");
         }
     }
 
@@ -47,7 +46,7 @@ public class GeneralMapper {
 
     private static StringBuilder createMethodName (Field field, boolean isCreatingGetterMethods) {
         StringBuilder fieldNameHandler = new StringBuilder(field.getName());
-        fieldNameHandler.replace(0, 0, String.valueOf(Character.toUpperCase(fieldNameHandler.charAt(0))));
+        fieldNameHandler.replace(0, 1, String.valueOf(Character.toUpperCase(fieldNameHandler.charAt(0))));
         fieldNameHandler.insert(0, isCreatingGetterMethods ? "get" : "set");
         return fieldNameHandler;
     }
