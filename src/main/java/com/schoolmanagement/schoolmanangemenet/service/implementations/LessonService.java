@@ -11,6 +11,7 @@ import com.schoolmanagement.schoolmanangemenet.service.interfaces.ILessonService
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +37,9 @@ public class LessonService implements ILessonService {
 
     @Override
     public List<ReadLessonsDTO> read () {
-        return null;
+        List<ReadLessonsDTO> receivedLessons = new ArrayList<>();
+        this.lessonRepository.findAll().forEach((lesson -> receivedLessons.add(GeneralMapper.convert(lesson, ReadLessonsDTO.class))));
+        return receivedLessons;
     }
 
     @Override
