@@ -16,7 +16,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping (path = GeneralConstantValues.API_BASE_URL + "students")
+@RequestMapping (path = GeneralConstantValues.API_BASE_URL + "/students")
 public class StudentController {
     private final IStudentService studentService;
 
