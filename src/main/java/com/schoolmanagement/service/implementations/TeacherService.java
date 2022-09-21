@@ -28,7 +28,7 @@ public class TeacherService implements ITeacherService {
     public Boolean create (CreateTeacherDTO createTeacherDTO) {
         Optional<Teacher> handler = this.teacherRepository.findById(createTeacherDTO.getPersonalNo());
         if (handler.isPresent()) {
-            throw new ApiRequestException("This teacher exists in the database!");
+            throw new ApiRequestException("This teacher already exists in the database!");
         } else {
             this.teacherRepository.save(GeneralMapper.convert(createTeacherDTO, Teacher.class));
             return true;
@@ -44,7 +44,13 @@ public class TeacherService implements ITeacherService {
 
     @Override
     public Boolean update (UpdateTeacherDTO updateTeacherDTO) {
-        return null;
+        Optional<Teacher> handler = this.teacherRepository.findById(updateTeacherDTO.getPersonalNo());
+        if (handler.isPresent()) {
+            this.teacherRepository.save(GeneralMapper.convert(updateTeacherDTO, Teacher.class));
+            return true;
+        } else {
+            throw new ApiRequestException("This teacher does not exist in the database!");
+        }
     }
 
     @Override
