@@ -41,4 +41,10 @@ public class FacultyController {
         this.facultyService.update(updateFacultyDTO);
         return ResponseEntity.ok(new Response(null, "Faculty updated successfully!", null, true));
     }
+
+    @DeleteMapping (path = "")
+    public ResponseEntity<Response> deleteFaculty (@RequestParam ("facultyId") Integer facultyId) {
+        this.facultyService.delete(facultyId);
+        return ResponseEntity.ok(new Response(null, "Faculty delete successfully!", null, true));
+    }
 }
