@@ -40,4 +40,10 @@ public class LessonController {
         this.lessonService.update(updateLessonDTO);
         return ResponseEntity.ok(new Response(null, "Lesson updated successfully!", null, true));
     }
+
+    @DeleteMapping (path = "")
+    public ResponseEntity<Response> deleteLesson (@RequestParam(name = "lessonId") Long lessonId) {
+        this.lessonService.delete(lessonId);
+        return ResponseEntity.ok(new Response(null, "Lesson delete successfully!", null, true));
+    }
 }
