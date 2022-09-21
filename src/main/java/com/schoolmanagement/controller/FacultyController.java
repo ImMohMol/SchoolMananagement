@@ -2,14 +2,14 @@ package com.schoolmanagement.controller;
 
 import com.schoolmanagement.constant.GeneralConstantValues;
 import com.schoolmanagement.model.Response;
+import com.schoolmanagement.model.dto.faculty.CreateFacultyDTO;
 import com.schoolmanagement.model.dto.faculty.ReadFacultiesDTO;
 import com.schoolmanagement.service.interfaces.IFacultyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -27,5 +27,11 @@ public class FacultyController {
         List<ReadFacultiesDTO> receivedFaculties = this.facultyService.read();
         return ResponseEntity.ok(new Response(null, GeneralConstantValues.SUCCESSFUL_OPERATION_MESSAGE,
                 receivedFaculties, true));
+    }
+
+    @PostMapping (path = "")
+    public ResponseEntity<Response> createNewFaculty (@RequestBody @Valid CreateFacultyDTO createFacultyDTO) {
+        this.facultyService.create(createFacultyDTO);
+        return ResponseEntity.ok(new Response(null, "Faculty created successfully!", null, true));
     }
 }
