@@ -1,7 +1,5 @@
 package com.schoolmanagement.model.dto.mapper;
 
-import org.springframework.stereotype.Component;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
