@@ -55,6 +55,12 @@ public class LessonService implements ILessonService {
 
     @Override
     public Boolean delete (Integer lessonId) {
-        return null;
+        Optional<Lesson> handler = this.lessonRepository.findById(lessonId);
+        if (handler.isPresent()) {
+            this.lessonRepository.delete(handler.get());
+            return true;
+        } else {
+            throw new ApiRequestException("This lesson does not exist in the database!");
+        }
     }
 }
