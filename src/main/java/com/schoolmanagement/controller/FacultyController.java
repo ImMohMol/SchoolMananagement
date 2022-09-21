@@ -4,6 +4,7 @@ import com.schoolmanagement.constant.GeneralConstantValues;
 import com.schoolmanagement.model.Response;
 import com.schoolmanagement.model.dto.faculty.CreateFacultyDTO;
 import com.schoolmanagement.model.dto.faculty.ReadFacultiesDTO;
+import com.schoolmanagement.model.dto.faculty.UpdateFacultyDTO;
 import com.schoolmanagement.service.interfaces.IFacultyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,5 +34,11 @@ public class FacultyController {
     public ResponseEntity<Response> createNewFaculty (@RequestBody @Valid CreateFacultyDTO createFacultyDTO) {
         this.facultyService.create(createFacultyDTO);
         return ResponseEntity.ok(new Response(null, "Faculty created successfully!", null, true));
+    }
+
+    @PutMapping (path = "")
+    public ResponseEntity<Response> updateFaculty (@RequestBody @Valid UpdateFacultyDTO updateFacultyDTO) {
+        this.facultyService.update(updateFacultyDTO);
+        return ResponseEntity.ok(new Response(null, "Faculty updated successfully!", null, true));
     }
 }
