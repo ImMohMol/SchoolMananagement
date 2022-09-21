@@ -10,7 +10,9 @@ public class Lesson {
     private Integer id;
     @Column (unique = true, nullable = false)
     private String name;
-    @ManyToMany(fetch = FetchType.LAZY)
+    @Column (nullable = false)
+    private Integer gradeNumber;
+    @ManyToMany (fetch = FetchType.LAZY)
     @JoinTable (name = "lesson_teachers", joinColumns = @JoinColumn (name = "teacher_id"),
             inverseJoinColumns = @JoinColumn (name = "lesson_id"))
     private List<Teacher> teachers;
@@ -29,6 +31,14 @@ public class Lesson {
 
     public void setName (String name) {
         this.name = name;
+    }
+
+    public Integer getGradeNumber () {
+        return gradeNumber;
+    }
+
+    public void setGradeNumber (Integer gradeNumber) {
+        this.gradeNumber = gradeNumber;
     }
 
     public List<Teacher> getTeachers () {
