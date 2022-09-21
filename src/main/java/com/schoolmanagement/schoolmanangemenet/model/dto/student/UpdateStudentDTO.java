@@ -13,7 +13,7 @@ public class UpdateStudentDTO {
     private String lastName;
     @NotNull (message = "The student national code can't be null!")
     @Size (max = 10, min = 10, message = "The student national code must be 10 digits!")
-    private String nationalCoe;
+    private String nationalCode;
 
     public String getStudentNo () {
         return studentNo;
@@ -39,11 +39,11 @@ public class UpdateStudentDTO {
         this.lastName = lastName;
     }
 
-    public String getNationalCoe () {
-        return nationalCoe;
+    public String getNationalCode () {
+        return nationalCode;
     }
 
-    public void setNationalCoe (String nationalCoe) {
-        this.nationalCoe = nationalCoe;
+    public void setNationalCode (String nationalCode) {
+        this.nationalCode = nationalCode;
     }
 }
