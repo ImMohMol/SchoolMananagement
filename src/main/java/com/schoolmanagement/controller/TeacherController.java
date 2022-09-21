@@ -41,4 +41,10 @@ public class TeacherController {
         this.teacherService.update(updateTeacherDTO);
         return ResponseEntity.ok(new Response(null, "Teacher updated successfully!", null, true));
     }
+
+    @DeleteMapping (path = "")
+    public ResponseEntity<Response> deleteTeacher (@RequestParam (name = "personalNo") String personalNo) {
+        this.teacherService.delete(personalNo);
+        return ResponseEntity.ok(new Response(null, "Teacher deleted successfully!", null, true));
+    }
 }
