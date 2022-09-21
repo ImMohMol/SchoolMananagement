@@ -44,7 +44,13 @@ public class FacultyService implements IFacultyService {
 
     @Override
     public Boolean update (UpdateFacultyDTO updateFacultyDTO) {
-
+        Optional<Faculty> handler = this.facultyRepository.findById(updateFacultyDTO.getId());
+        if (handler.isPresent()) {
+            this.facultyRepository.save(GeneralMapper.convert(updateFacultyDTO, Faculty.class));
+            return true;
+        } else {
+            throw new ApiRequestException("This faculty does not exist in the database!");
+        }
     }
 
     @Override
