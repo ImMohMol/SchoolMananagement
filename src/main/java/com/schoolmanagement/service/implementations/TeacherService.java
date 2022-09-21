@@ -11,6 +11,7 @@ import com.schoolmanagement.service.interfaces.ITeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +37,9 @@ public class TeacherService implements ITeacherService {
 
     @Override
     public List<ReadTeachersDTO> read () {
-        return null;
+        List<ReadTeachersDTO> receivedTeachers = new ArrayList<>();
+        this.teacherRepository.findAll().forEach((teacher -> receivedTeachers.add(GeneralMapper.convert(teacher, ReadTeachersDTO.class))));
+        return receivedTeachers;
     }
 
     @Override
