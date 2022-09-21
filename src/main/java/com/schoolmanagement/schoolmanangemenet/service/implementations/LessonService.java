@@ -44,7 +44,13 @@ public class LessonService implements ILessonService {
 
     @Override
     public Boolean update (UpdateLessonDTO updateLessonDTO) {
-        return null;
+        Optional<Lesson> handler = this.lessonRepository.findById(updateLessonDTO.getId());
+        if (handler.isPresent()) {
+            this.lessonRepository.save(GeneralMapper.convert(updateLessonDTO, Lesson.class));
+            return true;
+        } else {
+            throw new ApiRequestException("This lesson does not exist in the database!");
+        }
     }
 
     @Override
