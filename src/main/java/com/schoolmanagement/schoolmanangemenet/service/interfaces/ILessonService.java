@@ -13,5 +13,5 @@ public interface ILessonService {
 
     Boolean update (UpdateLessonDTO updateLessonDTO);
 
-    Boolean delete (Integer lessonId);
+    Boolean delete (Long lessonId);
 }

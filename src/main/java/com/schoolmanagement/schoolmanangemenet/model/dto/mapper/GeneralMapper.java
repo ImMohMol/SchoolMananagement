@@ -9,7 +9,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
 public class GeneralMapper {
     public static <TSource, TDestination> TDestination convert (TSource source, Type destinationType) {
         try {

@@ -54,7 +54,7 @@ public class LessonService implements ILessonService {
     }
 
     @Override
-    public Boolean delete (Integer lessonId) {
+    public Boolean delete (Long lessonId) {
         Optional<Lesson> handler = this.lessonRepository.findById(lessonId);
         if (handler.isPresent()) {
             this.lessonRepository.delete(handler.get());
