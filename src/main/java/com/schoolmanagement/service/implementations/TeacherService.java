@@ -55,6 +55,12 @@ public class TeacherService implements ITeacherService {
 
     @Override
     public Boolean delete (String personalNo) {
-        return null;
+        Optional<Teacher> handler = this.teacherRepository.findById(personalNo);
+        if (handler.isPresent()) {
+            this.teacherRepository.delete(handler.get());
+            return true;
+        } else {
+            throw new ApiRequestException("There is no teacher in the database with given personalNo!");
+        }
     }
 }
