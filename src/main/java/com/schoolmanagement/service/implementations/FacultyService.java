@@ -55,6 +55,12 @@ public class FacultyService implements IFacultyService {
 
     @Override
     public Boolean delete (Integer facultyId) {
-        return null;
+        Optional<Faculty> handler = this.facultyRepository.findById(facultyId);
+        if (handler.isPresent()) {
+            this.facultyRepository.delete(handler.get());
+            return true;
+        } else {
+            throw new ApiRequestException("There is no faculty with this id in the database!");
+        }
     }
 }
