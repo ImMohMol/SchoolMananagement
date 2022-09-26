@@ -15,8 +15,8 @@ public class Student {
     @Column (unique = true, nullable = false, length = 10)
     private String nationalCode;
     @OneToMany (fetch = FetchType.LAZY)
-    private List<Lesson> lessons;
-    @ManyToMany (mappedBy = "students")
+    private List<StudentLesson> lessons;
+    @ManyToMany (fetch = FetchType.LAZY, mappedBy = "students")
     private List<Teacher> teachers;
 
     public String getStudentNo () {
@@ -51,11 +51,11 @@ public class Student {
         this.nationalCode = nationalCode;
     }
 
-    public List<Lesson> getLessons () {
+    public List<StudentLesson> getLessons () {
         return lessons;
     }
 
-    public void setLessons (List<Lesson> lessons) {
+    public void setLessons (List<StudentLesson> lessons) {
         this.lessons = lessons;
     }
 

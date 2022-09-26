@@ -4,15 +4,15 @@ import javax.validation.constraints.NotNull;
 
 public class UpdateFacultyDTO {
     @NotNull (message = "The id is needed to update the faculty!")
-    private Integer id;
+    private Long id;
     @NotNull (message = "The faculty name can't be null!")
     private String name;
 
-    public Integer getId () {
+    public Long getId () {
         return id;
     }
 
-    public void setId (Integer id) {
+    public void setId (Long id) {
         this.id = id;
     }
 

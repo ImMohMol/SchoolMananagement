@@ -11,10 +11,10 @@ public class Lesson {
     @Column (unique = true, nullable = false)
     private String name;
     @Column (nullable = false)
-    private Integer gradeNumber;
-    @ManyToMany (fetch = FetchType.LAZY)
-    @JoinTable (name = "lesson_teachers", joinColumns = @JoinColumn (name = "teacher_id"),
-            inverseJoinColumns = @JoinColumn (name = "lesson_id"))
+    private int gradeNumber;
+    @OneToMany (fetch = FetchType.LAZY)
+    private List<StudentLesson> students;
+    @ManyToMany (fetch = FetchType.LAZY, mappedBy = "lessons")
     private List<Teacher> teachers;
 
     public Long getId () {
@@ -33,12 +33,20 @@ public class Lesson {
         this.name = name;
     }
 
-    public Integer getGradeNumber () {
+    public int getGradeNumber () {
         return gradeNumber;
     }
 
-    public void setGradeNumber (Integer gradeNumber) {
+    public void setGradeNumber (int gradeNumber) {
         this.gradeNumber = gradeNumber;
+    }
+
+    public List<StudentLesson> getStudents () {
+        return students;
+    }
+
+    public void setStudents (List<StudentLesson> students) {
+        this.students = students;
     }
 
     public List<Teacher> getTeachers () {

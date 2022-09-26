@@ -14,11 +14,13 @@ public class Teacher {
     private String lastName;
     @Column (unique = true, nullable = false, length = 10)
     private String nationalCode;
-    @ManyToMany (mappedBy = "teachers", fetch = FetchType.LAZY)
+    @ManyToMany (fetch = FetchType.LAZY)
+    @JoinTable (name = "teacher_lessons", joinColumns = @JoinColumn (name = "personal_no"), inverseJoinColumns =
+    @JoinColumn (name = "lesson_id"))
     private List<Lesson> lessons;
     @ManyToMany (fetch = FetchType.LAZY)
-    @JoinTable (name = "teacher_students", joinColumns = @JoinColumn (name = "student_no"), inverseJoinColumns =
-    @JoinColumn (name = "teacher_id"))
+    @JoinTable (name = "teacher_students", joinColumns = @JoinColumn (name = "personal_no"), inverseJoinColumns =
+    @JoinColumn (name = "student_no"))
     private List<Student> students;
 
     public String getPersonalNo () {
