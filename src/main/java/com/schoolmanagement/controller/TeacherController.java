@@ -2,6 +2,7 @@ package com.schoolmanagement.controller;
 
 import com.schoolmanagement.constant.GeneralConstantValues;
 import com.schoolmanagement.model.Response;
+import com.schoolmanagement.model.dto.student.ReadStudentsDTO;
 import com.schoolmanagement.model.dto.teacher.CreateTeacherDTO;
 import com.schoolmanagement.model.dto.teacher.ReadTeachersDTO;
 import com.schoolmanagement.model.dto.teacher.UpdateTeacherDTO;
@@ -46,5 +47,11 @@ public class TeacherController {
     public ResponseEntity<Response> deleteTeacher (@RequestParam (name = "personalNo") String personalNo) {
         this.teacherService.delete(personalNo);
         return ResponseEntity.ok(new Response(null, "Teacher deleted successfully!", null, true));
+    }
+
+    @GetMapping ("/students")
+    public ResponseEntity<Response> getTeacherStudents (@RequestParam ("personalNo") String personalNo) {
+        List<ReadStudentsDTO> students = this.teacherService.getStudentsList(personalNo);
+        return ResponseEntity.ok(new Response(null, GeneralConstantValues.SUCCESSFUL_OPERATION_MESSAGE, students, true));
     }
 }
