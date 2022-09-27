@@ -8,6 +8,9 @@ import com.schoolmanagement.service.interfaces.IStudentLessonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class StudentLessonService implements IStudentLessonService {
     private IStudentLessonRepository studentLessonRepository;
@@ -15,6 +18,13 @@ public class StudentLessonService implements IStudentLessonService {
     @Autowired
     public StudentLessonService (IStudentLessonRepository studentLessonRepository) {
         this.studentLessonRepository = studentLessonRepository;
+    }
+
+    @Override
+    public List<StudentLesson> findStudentLessons (Student student) {
+        List<StudentLesson> result = new ArrayList<>();
+        this.studentLessonRepository.findAllByStudent(student).forEach((result::add));
+        return result;
     }
 
     @Override

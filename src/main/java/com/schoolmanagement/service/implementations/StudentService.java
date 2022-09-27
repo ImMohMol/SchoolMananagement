@@ -3,6 +3,7 @@ package com.schoolmanagement.service.implementations;
 import com.schoolmanagement.exception.ApiRequestException;
 import com.schoolmanagement.model.Lesson;
 import com.schoolmanagement.model.Student;
+import com.schoolmanagement.model.StudentLesson;
 import com.schoolmanagement.model.dto.mapper.GeneralMapper;
 import com.schoolmanagement.model.dto.student.*;
 import com.schoolmanagement.repository.IStudentRepository;
@@ -87,5 +88,25 @@ public class StudentService implements IStudentService {
             return this.studentLessonService.enrollLesson(studentHandler.get(), lessonHandler.get());
         else
             throw new ApiRequestException("There is no student with given studentNo in database!");
+    }
+
+    @Override
+    public Double calculateAverage (String studentNo) {
+        Optional<Student> studentHandler = this.studentRepository.findById(studentNo);
+        double scoreSum = 0.0;
+        int gradeSum = 0;
+        if (studentHandler.isPresent()) {
+            List<StudentLesson> studentLessons = this.studentLessonService.findStudentLessons(studentHandler.get());
+            if (studentLessons.size() == 0)
+                throw new ApiRequestException("This student has no lessons in his/her enrolled lessons!");
+            else {
+                for (StudentLesson studentLesson : studentLessons) {
+                    gradeSum += studentLesson.getLesson().getGradeNumber();
+                    scoreSum += (studentLesson.getScore() * studentLesson.getLesson().getGradeNumber());
+                }
+                return scoreSum / gradeSum;
+            }
+        } else
+            throw new ApiRequestException("There is no student with given studentNo in the database!");
     }
 }

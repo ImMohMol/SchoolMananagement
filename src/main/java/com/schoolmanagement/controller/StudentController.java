@@ -61,4 +61,10 @@ public class StudentController {
                 null,
                 true));
     }
+
+    @GetMapping ("/average")
+    public ResponseEntity<Response> calculateAverage (@RequestParam ("studentNo") String studentNo) {
+        Double average = this.studentService.calculateAverage(studentNo);
+        return ResponseEntity.ok(new Response(null, GeneralConstantValues.SUCCESSFUL_OPERATION_MESSAGE, average, true));
+    }
 }
