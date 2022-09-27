@@ -53,7 +53,7 @@ public class StudentController {
         return ResponseEntity.ok(new Response(null, StudentConstantValues.STUDENT_UPDATED_SUCCESSFULLY, null, true));
     }
 
-    @PostMapping (path = "/lessons/enroll")
+    @PostMapping (path = "/lessons")
     public ResponseEntity<Response> enrollLesson (@RequestBody @Valid EnrollLessonDTO enrollLessonDTO) {
         this.studentService.enrollLesson(enrollLessonDTO);
         return ResponseEntity.ok(new Response(null, String.format("The lesson (%s) added to this student lessons " +
