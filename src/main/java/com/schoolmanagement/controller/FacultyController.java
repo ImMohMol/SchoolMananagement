@@ -30,6 +30,14 @@ public class FacultyController {
                 receivedFaculties, true));
     }
 
+    @GetMapping ("/paginated")
+    public ResponseEntity<Response> getAllFacultiesPaginated (@RequestParam ("page") int page,
+                                                              @RequestParam ("size") int size) {
+        List<ReadFacultiesDTO> faculties = this.facultyService.readPaginated(page, size);
+        return ResponseEntity.ok(new Response(null, GeneralConstantValues.SUCCESSFUL_OPERATION_MESSAGE, faculties,
+                true));
+    }
+
     @PostMapping (path = "")
     public ResponseEntity<Response> createNewFaculty (@RequestBody @Valid CreateFacultyDTO createFacultyDTO) {
         this.facultyService.create(createFacultyDTO);
