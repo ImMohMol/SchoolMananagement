@@ -13,6 +13,8 @@ public interface ILessonService {
 
     List<ReadLessonsDTO> read ();
 
+    List<ReadLessonsDTO> readPaginated (int page, int size);
+
     Boolean update (UpdateLessonDTO updateLessonDTO);
 
     Boolean delete (Long lessonId);

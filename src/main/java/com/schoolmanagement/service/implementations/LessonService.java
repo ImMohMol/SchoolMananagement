@@ -9,6 +9,7 @@ import com.schoolmanagement.model.dto.mapper.GeneralMapper;
 import com.schoolmanagement.repository.ILessonRepository;
 import com.schoolmanagement.service.interfaces.ILessonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -43,6 +44,14 @@ public class LessonService implements ILessonService {
     }
 
     @Override
+    public List<ReadLessonsDTO> readPaginated (int page, int size) {
+        List<Lesson> lessons = this.lessonRepository.findAll(PageRequest.of(page, size)).toList();
+        List<ReadLessonsDTO> result = new ArrayList<>();
+        lessons.forEach((lesson -> result.add(GeneralMapper.convert(lesson, ReadLessonsDTO.class))));
+        return result;
+    }
+
+    @Override
     public Boolean update (UpdateLessonDTO updateLessonDTO) {
         Optional<Lesson> handler = this.lessonRepository.findById(updateLessonDTO.getId());
         if (handler.isPresent()) {
@@ -67,8 +76,7 @@ public class LessonService implements ILessonService {
     @Override
     public Optional<Lesson> findLesson (String lessonName) {
         Optional<Lesson> handler = this.lessonRepository.findByName(lessonName);
-        if (handler.isPresent())
-            return handler;
+        if (handler.isPresent()) return handler;
         throw new ApiRequestException("There is no lesson with this name in the database!");
     }
 }
