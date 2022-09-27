@@ -3,10 +3,10 @@ package com.schoolmanagement.service.implementations;
 import com.schoolmanagement.exception.ApiRequestException;
 import com.schoolmanagement.model.Lesson;
 import com.schoolmanagement.model.dto.lesson.CreateLessonDTO;
+import com.schoolmanagement.model.dto.lesson.ReadLessonsDTO;
 import com.schoolmanagement.model.dto.lesson.UpdateLessonDTO;
 import com.schoolmanagement.model.dto.mapper.GeneralMapper;
 import com.schoolmanagement.repository.ILessonRepository;
-import com.schoolmanagement.model.dto.lesson.ReadLessonsDTO;
 import com.schoolmanagement.service.interfaces.ILessonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,5 +62,13 @@ public class LessonService implements ILessonService {
         } else {
             throw new ApiRequestException("This lesson does not exist in the database!");
         }
+    }
+
+    @Override
+    public Optional<Lesson> findLesson (String lessonName) {
+        Optional<Lesson> handler = this.lessonRepository.findByName(lessonName);
+        if (handler.isPresent())
+            return handler;
+        throw new ApiRequestException("There is no lesson with this name in the database!");
     }
 }

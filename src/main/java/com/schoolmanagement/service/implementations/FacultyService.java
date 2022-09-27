@@ -54,7 +54,7 @@ public class FacultyService implements IFacultyService {
     }
 
     @Override
-    public Boolean delete (Integer facultyId) {
+    public Boolean delete (Long facultyId) {
         Optional<Faculty> handler = this.facultyRepository.findById(facultyId);
         if (handler.isPresent()) {
             this.facultyRepository.delete(handler.get());

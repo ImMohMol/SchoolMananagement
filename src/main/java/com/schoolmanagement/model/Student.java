@@ -2,6 +2,7 @@ package com.schoolmanagement.model;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Student {
@@ -16,7 +17,7 @@ public class Student {
     private String nationalCode;
     @OneToMany (fetch = FetchType.LAZY)
     private List<StudentLesson> lessons;
-    @ManyToMany (fetch = FetchType.LAZY, mappedBy = "students")
+    @ManyToMany (fetch = FetchType.LAZY)
     private List<Teacher> teachers;
 
     public String getStudentNo () {
@@ -65,5 +66,18 @@ public class Student {
 
     public void setTeachers (List<Teacher> teachers) {
         this.teachers = teachers;
+    }
+
+    @Override
+    public boolean equals (Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Student)) return false;
+        Student student = (Student) o;
+        return getStudentNo().equals(student.getStudentNo());
+    }
+
+    @Override
+    public int hashCode () {
+        return Objects.hash(getStudentNo());
     }
 }

@@ -43,7 +43,7 @@ public class FacultyController {
     }
 
     @DeleteMapping (path = "")
-    public ResponseEntity<Response> deleteFaculty (@RequestParam ("facultyId") Integer facultyId) {
+    public ResponseEntity<Response> deleteFaculty (@RequestParam ("facultyId") Long facultyId) {
         this.facultyService.delete(facultyId);
         return ResponseEntity.ok(new Response(null, "Faculty delete successfully!", null, true));
     }

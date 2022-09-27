@@ -1,9 +1,6 @@
 package com.schoolmanagement.service.interfaces;
 
-import com.schoolmanagement.model.dto.student.DeleteStudentDTO;
-import com.schoolmanagement.model.dto.student.ReadStudentsDTO;
-import com.schoolmanagement.model.dto.student.UpdateStudentDTO;
-import com.schoolmanagement.model.dto.student.CreateStudentDTO;
+import com.schoolmanagement.model.dto.student.*;
 
 import java.util.List;
 
@@ -12,7 +9,11 @@ public interface IStudentService {
 
     List<ReadStudentsDTO> read ();
 
+    List<ReadStudentsDTO> readPaginated(int page, int size);
+
     Boolean update (UpdateStudentDTO updateStudentDTO);
 
     Boolean delete (DeleteStudentDTO deleteStudentDTO);
+
+    Boolean enrollLesson(EnrollLessonDTO enrollLessonDTO);
 }

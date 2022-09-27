@@ -14,7 +14,7 @@ public class Lesson {
     private int gradeNumber;
     @OneToMany (fetch = FetchType.LAZY)
     private List<StudentLesson> students;
-    @ManyToMany (fetch = FetchType.LAZY, mappedBy = "lessons")
+    @ManyToMany (fetch = FetchType.LAZY)
     private List<Teacher> teachers;
 
     public Long getId () {

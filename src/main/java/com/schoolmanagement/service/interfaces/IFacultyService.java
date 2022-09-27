@@ -13,5 +13,5 @@ public interface IFacultyService {
 
     Boolean update (UpdateFacultyDTO updateFacultyDTO);
 
-    Boolean delete (Integer facultyId);
+    Boolean delete (Long facultyId);
 }

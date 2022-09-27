@@ -3,10 +3,7 @@ package com.schoolmanagement.controller;
 import com.schoolmanagement.constant.GeneralConstantValues;
 import com.schoolmanagement.constant.StudentConstantValues;
 import com.schoolmanagement.model.Response;
-import com.schoolmanagement.model.dto.student.CreateStudentDTO;
-import com.schoolmanagement.model.dto.student.DeleteStudentDTO;
-import com.schoolmanagement.model.dto.student.ReadStudentsDTO;
-import com.schoolmanagement.model.dto.student.UpdateStudentDTO;
+import com.schoolmanagement.model.dto.student.*;
 import com.schoolmanagement.service.interfaces.IStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +28,13 @@ public class StudentController {
         return ResponseEntity.ok(new Response(null, GeneralConstantValues.SUCCESSFUL_OPERATION_MESSAGE, students, true));
     }
 
+    @GetMapping (path = "/paginated")
+    public ResponseEntity<Response> getAllStudentsPaginated (@RequestParam (name = "page") int page,
+                                                             @RequestParam (name = "size") int size) {
+        List<ReadStudentsDTO> students = this.studentService.readPaginated(page, size);
+        return ResponseEntity.ok(new Response(null, GeneralConstantValues.SUCCESSFUL_OPERATION_MESSAGE, students, true));
+    }
+
     @PostMapping (path = "")
     public ResponseEntity<Response> createNewStudent (@RequestBody @Valid CreateStudentDTO createStudentDTO) {
         this.studentService.create(createStudentDTO);
@@ -47,5 +51,14 @@ public class StudentController {
     public ResponseEntity<Response> updateStudent (@RequestBody @Valid UpdateStudentDTO updateStudentDTO) {
         this.studentService.update(updateStudentDTO);
         return ResponseEntity.ok(new Response(null, StudentConstantValues.STUDENT_UPDATED_SUCCESSFULLY, null, true));
+    }
+
+    @PostMapping (path = "/lessons/enroll")
+    public ResponseEntity<Response> enrollLesson (@RequestBody @Valid EnrollLessonDTO enrollLessonDTO) {
+        this.studentService.enrollLesson(enrollLessonDTO);
+        return ResponseEntity.ok(new Response(null, String.format("The lesson (%s) added to this student lessons " +
+                "successfully!", enrollLessonDTO.getLessonName()),
+                null,
+                true));
     }
 }
