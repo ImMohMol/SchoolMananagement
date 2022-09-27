@@ -9,6 +9,7 @@ import com.schoolmanagement.model.dto.mapper.GeneralMapper;
 import com.schoolmanagement.repository.IFacultyRepository;
 import com.schoolmanagement.service.interfaces.IFacultyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -40,6 +41,14 @@ public class FacultyService implements IFacultyService {
         List<ReadFacultiesDTO> receivedFaculties = new ArrayList<>();
         this.facultyRepository.findAll().forEach(faculty -> receivedFaculties.add(GeneralMapper.convert(faculty, ReadFacultiesDTO.class)));
         return receivedFaculties;
+    }
+
+    @Override
+    public List<ReadFacultiesDTO> readPaginated (int page, int size) {
+        List<Faculty> faculties = this.facultyRepository.findAll(PageRequest.of(page, size)).toList();
+        List<ReadFacultiesDTO> result = new ArrayList<>();
+        faculties.forEach((faculty -> result.add(GeneralMapper.convert(faculty, ReadFacultiesDTO.class))));
+        return result;
     }
 
     @Override

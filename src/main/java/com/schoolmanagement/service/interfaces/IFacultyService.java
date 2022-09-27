@@ -11,6 +11,8 @@ public interface IFacultyService {
 
     List<ReadFacultiesDTO> read ();
 
+    List<ReadFacultiesDTO> readPaginated(int page, int size);
+
     Boolean update (UpdateFacultyDTO updateFacultyDTO);
 
     Boolean delete (Long facultyId);
