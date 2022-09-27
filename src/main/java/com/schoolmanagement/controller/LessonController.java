@@ -29,6 +29,13 @@ public class LessonController {
         return ResponseEntity.ok(new Response(null, GeneralConstantValues.SUCCESSFUL_OPERATION_MESSAGE, result, true));
     }
 
+    @GetMapping ("/paginated")
+    public ResponseEntity<Response> getAllLessonsPaginated (@RequestParam ("page") int page,
+                                                            @RequestParam ("size") int size) {
+        List<ReadLessonsDTO> lessons = this.lessonService.readPaginated(page, size);
+        return ResponseEntity.ok(new Response(null, GeneralConstantValues.SUCCESSFUL_OPERATION_MESSAGE, lessons, true));
+    }
+
     @PostMapping (path = "")
     public ResponseEntity<Response> createNewLesson (@RequestBody @Valid CreateLessonDTO createLessonDTO) {
         this.lessonService.create(createLessonDTO);
@@ -42,7 +49,7 @@ public class LessonController {
     }
 
     @DeleteMapping (path = "")
-    public ResponseEntity<Response> deleteLesson (@RequestParam(name = "lessonId") Long lessonId) {
+    public ResponseEntity<Response> deleteLesson (@RequestParam (name = "lessonId") Long lessonId) {
         this.lessonService.delete(lessonId);
         return ResponseEntity.ok(new Response(null, "Lesson delete successfully!", null, true));
     }
