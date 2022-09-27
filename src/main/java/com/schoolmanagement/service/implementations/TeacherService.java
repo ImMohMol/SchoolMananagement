@@ -76,11 +76,12 @@ public class TeacherService implements ITeacherService {
 
     @Override
     public List<ReadStudentsDTO> getStudentsList (String personalNo) {
-        return null;
-    }
-
-    @Override
-    public List<ReadStudentsDTO> getStudentsListPaginated (String personalNo, int page, int size) {
-        return null;
+        Optional<Teacher> teacherHandler = this.teacherRepository.findById(personalNo);
+        if (teacherHandler.isPresent()) {
+            List<ReadStudentsDTO> students = new ArrayList<>();
+            teacherHandler.get().getStudents().forEach((student -> students.add(GeneralMapper.convert(student, ReadStudentsDTO.class))));
+            return students;
+        } else
+            throw new ApiRequestException("There is no teacher with given personalNo in the database!");
     }
 }

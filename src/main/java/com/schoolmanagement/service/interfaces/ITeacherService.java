@@ -12,13 +12,11 @@ public interface ITeacherService {
 
     List<ReadTeachersDTO> read ();
 
-    List<ReadTeachersDTO> readPaginated(int page, int size);
+    List<ReadTeachersDTO> readPaginated (int page, int size);
 
     Boolean update (UpdateTeacherDTO updateTeacherDTO);
 
     Boolean delete (String personalNo);
 
-    List<ReadStudentsDTO> getStudentsList(String personalNo);
-
-    List<ReadStudentsDTO> getStudentsListPaginated(String personalNo, int page, int size);
+    List<ReadStudentsDTO> getStudentsList (String personalNo);
 }
