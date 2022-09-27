@@ -1,7 +1,7 @@
 package com.schoolmanagement.repository;
 
 import com.schoolmanagement.model.Teacher;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ITeacherRepository extends CrudRepository<Teacher, String> {
+public interface ITeacherRepository extends JpaRepository<Teacher, String> {
 }

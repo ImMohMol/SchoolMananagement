@@ -3,12 +3,14 @@ package com.schoolmanagement.service.implementations;
 import com.schoolmanagement.exception.ApiRequestException;
 import com.schoolmanagement.model.Teacher;
 import com.schoolmanagement.model.dto.mapper.GeneralMapper;
+import com.schoolmanagement.model.dto.student.ReadStudentsDTO;
 import com.schoolmanagement.model.dto.teacher.ReadTeachersDTO;
 import com.schoolmanagement.repository.ITeacherRepository;
 import com.schoolmanagement.model.dto.teacher.CreateTeacherDTO;
 import com.schoolmanagement.model.dto.teacher.UpdateTeacherDTO;
 import com.schoolmanagement.service.interfaces.ITeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -43,6 +45,14 @@ public class TeacherService implements ITeacherService {
     }
 
     @Override
+    public List<ReadTeachersDTO> readPaginated (int page, int size) {
+        List<Teacher> teachers = this.teacherRepository.findAll(PageRequest.of(page, size)).toList();
+        List<ReadTeachersDTO> result = new ArrayList<>();
+        teachers.forEach((teacher -> result.add(GeneralMapper.convert(teacher, ReadTeachersDTO.class))));
+        return result;
+    }
+
+    @Override
     public Boolean update (UpdateTeacherDTO updateTeacherDTO) {
         Optional<Teacher> handler = this.teacherRepository.findById(updateTeacherDTO.getPersonalNo());
         if (handler.isPresent()) {
@@ -62,5 +72,15 @@ public class TeacherService implements ITeacherService {
         } else {
             throw new ApiRequestException("There is no teacher in the database with given personalNo!");
         }
+    }
+
+    @Override
+    public List<ReadStudentsDTO> getStudentsList (String personalNo) {
+        return null;
+    }
+
+    @Override
+    public List<ReadStudentsDTO> getStudentsListPaginated (String personalNo, int page, int size) {
+        return null;
     }
 }
