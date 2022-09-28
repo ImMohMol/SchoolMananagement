@@ -1,6 +1,7 @@
 package com.schoolmanagement.controller;
 
 import com.schoolmanagement.constant.GeneralConstantValues;
+import com.schoolmanagement.constant.TeacherMessageGenerator;
 import com.schoolmanagement.model.Response;
 import com.schoolmanagement.model.dto.student.ReadStudentsDTO;
 import com.schoolmanagement.model.dto.teacher.CreateTeacherDTO;
@@ -34,19 +35,27 @@ public class TeacherController {
     @PostMapping (path = "")
     public ResponseEntity<Response> createNewTeacher (@RequestBody @Valid CreateTeacherDTO createTeacherDTO) {
         this.teacherService.create(createTeacherDTO);
-        return ResponseEntity.ok(new Response(null, "Teacher created successfully!", null, true));
+        return ResponseEntity.ok(new Response(null,
+                TeacherMessageGenerator.createTeacherCreatedMessage(createTeacherDTO.getFirstName(),
+                        createTeacherDTO.getLastName()),
+                null,
+                true));
     }
 
     @PutMapping (path = "")
     public ResponseEntity<Response> updateTeacher (@RequestBody @Valid UpdateTeacherDTO updateTeacherDTO) {
         this.teacherService.update(updateTeacherDTO);
-        return ResponseEntity.ok(new Response(null, "Teacher updated successfully!", null, true));
+        return ResponseEntity.ok(new Response(null,
+                TeacherMessageGenerator.createTeacherUpdatedMessage(updateTeacherDTO.getFirstName(),
+                        updateTeacherDTO.getLastName()), null,
+                true));
     }
 
     @DeleteMapping (path = "")
     public ResponseEntity<Response> deleteTeacher (@RequestParam (name = "personalNo") String personalNo) {
         this.teacherService.delete(personalNo);
-        return ResponseEntity.ok(new Response(null, "Teacher deleted successfully!", null, true));
+        return ResponseEntity.ok(new Response(null, TeacherMessageGenerator.createTeacherDeletedMessage(personalNo), null,
+                true));
     }
 
     @GetMapping ("/students")

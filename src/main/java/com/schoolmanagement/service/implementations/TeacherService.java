@@ -1,5 +1,6 @@
 package com.schoolmanagement.service.implementations;
 
+import com.schoolmanagement.constant.TeacherMessageGenerator;
 import com.schoolmanagement.exception.ApiRequestException;
 import com.schoolmanagement.model.Student;
 import com.schoolmanagement.model.Teacher;
@@ -34,7 +35,7 @@ public class TeacherService implements ITeacherService {
     public Boolean create (CreateTeacherDTO createTeacherDTO) {
         Optional<Teacher> handler = this.teacherRepository.findById(createTeacherDTO.getPersonalNo());
         if (handler.isPresent()) {
-            throw new ApiRequestException("This teacher already exists in the database!");
+            throw new ApiRequestException(TeacherMessageGenerator.createTeacherExistsMessage(createTeacherDTO.getFirstName(), createTeacherDTO.getLastName()));
         } else {
             this.teacherRepository.save(GeneralMapper.convert(createTeacherDTO, Teacher.class));
             return true;
@@ -63,7 +64,7 @@ public class TeacherService implements ITeacherService {
             this.teacherRepository.save(GeneralMapper.convert(updateTeacherDTO, Teacher.class));
             return true;
         } else {
-            throw new ApiRequestException("This teacher does not exist in the database!");
+            throw new ApiRequestException(TeacherMessageGenerator.createTeacherDoesNotExistMessage(updateTeacherDTO.getFirstName(), updateTeacherDTO.getLastName()));
         }
     }
 
@@ -74,7 +75,7 @@ public class TeacherService implements ITeacherService {
             this.teacherRepository.delete(handler.get());
             return true;
         } else {
-            throw new ApiRequestException("There is no teacher in the database with given personalNo!");
+            throw new ApiRequestException(TeacherMessageGenerator.createTeacherDoesNotExistMessage(personalNo));
         }
     }
 
@@ -86,7 +87,7 @@ public class TeacherService implements ITeacherService {
             teacherHandler.get().getStudents().forEach((student -> students.add(GeneralMapper.convert(student, ReadStudentsDTO.class))));
             return students;
         } else
-            throw new ApiRequestException("There is no teacher with given personalNo in the database!");
+            throw new ApiRequestException(TeacherMessageGenerator.createTeacherDoesNotExistMessage(personalNo));
     }
 
     @Override
@@ -99,6 +100,6 @@ public class TeacherService implements ITeacherService {
                 result += this.studentService.calculateAverage(student.getStudentNo());
             return result / students.size();
         } else
-            throw new ApiRequestException("There is no teacher with given personalNo in the database!");
+            throw new ApiRequestException(TeacherMessageGenerator.createTeacherDoesNotExistMessage(personalNo));
     }
 }
