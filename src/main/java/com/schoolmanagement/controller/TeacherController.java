@@ -54,4 +54,10 @@ public class TeacherController {
         List<ReadStudentsDTO> students = this.teacherService.getStudentsList(personalNo);
         return ResponseEntity.ok(new Response(null, GeneralConstantValues.SUCCESSFUL_OPERATION_MESSAGE, students, true));
     }
+
+    @GetMapping ("/students/average")
+    public ResponseEntity<Response> calculateStudentsAverage (@RequestParam ("personalNo") String personalNo) {
+        double result = this.teacherService.calculateStudentsAverage(personalNo);
+        return ResponseEntity.ok(new Response(null, GeneralConstantValues.SUCCESSFUL_OPERATION_MESSAGE, result, true));
+    }
 }

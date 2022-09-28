@@ -6,13 +6,13 @@ public class Response {
     private ApiException exception;
     private String resultMessage;
     private Object result;
-    private Boolean isOk;
+    private Boolean completed;
 
-    public Response (ApiException exception, String resultMessage, Object result, Boolean isOk) {
+    public Response (ApiException exception, String resultMessage, Object result, Boolean completed) {
         this.exception = exception;
         this.resultMessage = resultMessage;
         this.result = result;
-        this.isOk = isOk;
+        this.completed = completed;
     }
 
     public String getResultMessage () {
@@ -32,10 +32,18 @@ public class Response {
     }
 
     public Boolean getOk () {
-        return isOk;
+        return completed;
     }
 
     public void setOk (Boolean ok) {
-        isOk = ok;
+        completed = ok;
+    }
+
+    public ApiException getException () {
+        return exception;
+    }
+
+    public void setException (ApiException exception) {
+        this.exception = exception;
     }
 }
