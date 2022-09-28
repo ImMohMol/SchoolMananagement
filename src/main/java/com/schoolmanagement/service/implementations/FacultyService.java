@@ -59,18 +59,18 @@ public class FacultyService implements IFacultyService {
             this.facultyRepository.save(GeneralMapper.convert(updateFacultyDTO, Faculty.class));
             return true;
         } else {
-            throw new ApiRequestException(FacultyMessageGenerator.createFacultyDoesNotExists(updateFacultyDTO.getName()));
+            throw new ApiRequestException(FacultyMessageGenerator.createFacultyDoesNotExistsMessage(updateFacultyDTO.getName()));
         }
     }
 
     @Override
-    public Boolean delete (Long facultyId) {
-        Optional<Faculty> handler = this.facultyRepository.findById(facultyId);
+    public Boolean delete (String facultyName) {
+        Optional<Faculty> handler = this.facultyRepository.findByName(facultyName);
         if (handler.isPresent()) {
             this.facultyRepository.delete(handler.get());
             return true;
         } else {
-            throw new ApiRequestException(FacultyMessageGenerator.createFacultyDoesNotExists(facultyId));
+            throw new ApiRequestException(FacultyMessageGenerator.createFacultyDoesNotExistsMessage(facultyName));
         }
     }
 }

@@ -15,5 +15,5 @@ public interface IFacultyService {
 
     Boolean update (UpdateFacultyDTO updateFacultyDTO);
 
-    Boolean delete (Long facultyId);
+    Boolean delete (String facultyName);
 }
