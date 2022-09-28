@@ -1,5 +1,6 @@
 package com.schoolmanagement.service.implementations;
 
+import com.schoolmanagement.constant.LessonMessageGenerator;
 import com.schoolmanagement.exception.ApiRequestException;
 import com.schoolmanagement.model.Lesson;
 import com.schoolmanagement.model.dto.lesson.CreateLessonDTO;
@@ -29,7 +30,7 @@ public class LessonService implements ILessonService {
     public Boolean create (CreateLessonDTO createlessonDTO) {
         Optional<Lesson> handler = this.lessonRepository.findByName(createlessonDTO.getName());
         if (handler.isPresent()) {
-            throw new ApiRequestException("This lesson exists in the database and can't add it again!");
+            throw new ApiRequestException(LessonMessageGenerator.createLessonExistsMessage(createlessonDTO.getName()));
         } else {
             this.lessonRepository.save(GeneralMapper.convert(createlessonDTO, Lesson.class));
             return true;
@@ -58,18 +59,18 @@ public class LessonService implements ILessonService {
             this.lessonRepository.save(GeneralMapper.convert(updateLessonDTO, Lesson.class));
             return true;
         } else {
-            throw new ApiRequestException("This lesson does not exist in the database!");
+            throw new ApiRequestException(LessonMessageGenerator.createLessonDoesNotExistMessage(updateLessonDTO.getName()));
         }
     }
 
     @Override
-    public Boolean delete (Long lessonId) {
-        Optional<Lesson> handler = this.lessonRepository.findById(lessonId);
+    public Boolean delete (String lessonName) {
+        Optional<Lesson> handler = this.lessonRepository.findByName(lessonName);
         if (handler.isPresent()) {
             this.lessonRepository.delete(handler.get());
             return true;
         } else {
-            throw new ApiRequestException("This lesson does not exist in the database!");
+            throw new ApiRequestException(LessonMessageGenerator.createLessonDoesNotExistMessage(lessonName));
         }
     }
 
@@ -77,6 +78,6 @@ public class LessonService implements ILessonService {
     public Optional<Lesson> findLesson (String lessonName) {
         Optional<Lesson> handler = this.lessonRepository.findByName(lessonName);
         if (handler.isPresent()) return handler;
-        throw new ApiRequestException("There is no lesson with this name in the database!");
+        throw new ApiRequestException(LessonMessageGenerator.createLessonDoesNotExistMessage(lessonName));
     }
 }

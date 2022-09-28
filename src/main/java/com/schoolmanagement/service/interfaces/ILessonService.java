@@ -17,7 +17,7 @@ public interface ILessonService {
 
     Boolean update (UpdateLessonDTO updateLessonDTO);
 
-    Boolean delete (Long lessonId);
+    Boolean delete (String lessonName);
 
     Optional<Lesson> findLesson (String lessonName);
 }
