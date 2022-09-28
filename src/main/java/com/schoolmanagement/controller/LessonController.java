@@ -1,6 +1,7 @@
 package com.schoolmanagement.controller;
 
 import com.schoolmanagement.constant.GeneralConstantValues;
+import com.schoolmanagement.constant.LessonMessageGenerator;
 import com.schoolmanagement.model.Response;
 import com.schoolmanagement.model.dto.lesson.CreateLessonDTO;
 import com.schoolmanagement.model.dto.lesson.ReadLessonsDTO;
@@ -39,18 +40,23 @@ public class LessonController {
     @PostMapping (path = "")
     public ResponseEntity<Response> createNewLesson (@RequestBody @Valid CreateLessonDTO createLessonDTO) {
         this.lessonService.create(createLessonDTO);
-        return ResponseEntity.ok(new Response(null, "Lesson created successfully!", null, true));
+        return ResponseEntity.ok(new Response(null,
+                LessonMessageGenerator.createLessonCreatedMessage(createLessonDTO.getName()), null,
+                true));
     }
 
     @PutMapping (path = "")
     public ResponseEntity<Response> updateLesson (@RequestBody @Valid UpdateLessonDTO updateLessonDTO) {
         this.lessonService.update(updateLessonDTO);
-        return ResponseEntity.ok(new Response(null, "Lesson updated successfully!", null, true));
+        return ResponseEntity.ok(new Response(null,
+                LessonMessageGenerator.createLessonUpdatedMessage(updateLessonDTO.getName()), null,
+                true));
     }
 
     @DeleteMapping (path = "")
-    public ResponseEntity<Response> deleteLesson (@RequestParam (name = "lessonId") Long lessonId) {
-        this.lessonService.delete(lessonId);
-        return ResponseEntity.ok(new Response(null, "Lesson delete successfully!", null, true));
+    public ResponseEntity<Response> deleteLesson (@RequestParam (name = "lessonName") String lessonName) {
+        this.lessonService.delete(lessonName);
+        return ResponseEntity.ok(new Response(null, LessonMessageGenerator.createLessonDeletedMessage(lessonName), null,
+                true));
     }
 }
