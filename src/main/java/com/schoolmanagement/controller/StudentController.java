@@ -1,7 +1,7 @@
 package com.schoolmanagement.controller;
 
 import com.schoolmanagement.constant.GeneralConstantValues;
-import com.schoolmanagement.constant.StudentConstantValues;
+import com.schoolmanagement.constant.StudentMessageGenerator;
 import com.schoolmanagement.model.Response;
 import com.schoolmanagement.model.dto.student.*;
 import com.schoolmanagement.service.interfaces.IStudentService;
@@ -38,19 +38,26 @@ public class StudentController {
     @PostMapping (path = "")
     public ResponseEntity<Response> createNewStudent (@RequestBody @Valid CreateStudentDTO createStudentDTO) {
         this.studentService.create(createStudentDTO);
-        return ResponseEntity.ok(new Response(null, StudentConstantValues.STUDENT_CREATED_SUCCESSFULLY, null, true));
+        return ResponseEntity.ok(new Response(null,
+                StudentMessageGenerator.createStudentCreatedMessage(createStudentDTO.getFirstName(),
+                        createStudentDTO.getLastName()), null,
+                true));
     }
 
     @DeleteMapping (path = "")
-    public ResponseEntity<Response> deleteStudent (@RequestBody @Valid DeleteStudentDTO deleteStudentDTO) {
-        this.studentService.delete(deleteStudentDTO);
-        return ResponseEntity.ok(new Response(null, StudentConstantValues.STUDENT_DELETED_SUCCESSFULLY, null, true));
+    public ResponseEntity<Response> deleteStudent (@RequestParam ("studentNo") String studentNo) {
+        this.studentService.delete(studentNo);
+        return ResponseEntity.ok(new Response(null, StudentMessageGenerator.createStudentDeletedMessage(studentNo), null,
+                true));
     }
 
     @PutMapping (path = "")
     public ResponseEntity<Response> updateStudent (@RequestBody @Valid UpdateStudentDTO updateStudentDTO) {
         this.studentService.update(updateStudentDTO);
-        return ResponseEntity.ok(new Response(null, StudentConstantValues.STUDENT_UPDATED_SUCCESSFULLY, null, true));
+        return ResponseEntity.ok(new Response(null,
+                StudentMessageGenerator.createStudentUpdateddMessage(updateStudentDTO.getFirstName(),
+                        updateStudentDTO.getLastName()), null,
+                true));
     }
 
     @PostMapping (path = "/lessons")
