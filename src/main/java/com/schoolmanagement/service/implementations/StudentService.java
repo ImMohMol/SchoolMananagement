@@ -1,5 +1,6 @@
 package com.schoolmanagement.service.implementations;
 
+import com.schoolmanagement.constant.StudentMessageGenerator;
 import com.schoolmanagement.exception.ApiRequestException;
 import com.schoolmanagement.model.Lesson;
 import com.schoolmanagement.model.Student;
@@ -35,9 +36,9 @@ public class StudentService implements IStudentService {
     @Override
     public Boolean create (CreateStudentDTO createStudentDTO) {
         Optional<Student> handler = this.studentRepository.findByNationalCode(createStudentDTO.getNationalCode());
-        if (handler.isPresent()) {
-            throw new ApiRequestException("This student exists in the database and cant insert it again!");
-        } else {
+        if (handler.isPresent())
+            throw new ApiRequestException(StudentMessageGenerator.createStudentExistsMessage(createStudentDTO.getFirstName(), createStudentDTO.getLastName()));
+        else {
             this.studentRepository.save(Objects.requireNonNull(GeneralMapper.convert(createStudentDTO, Student.class)));
             return true;
         }
@@ -64,20 +65,18 @@ public class StudentService implements IStudentService {
         if (handler.isPresent()) {
             this.studentRepository.save(Objects.requireNonNull(GeneralMapper.convert(updateStudentDTO, Student.class)));
             return true;
-        } else {
-            throw new ApiRequestException("This student does not exist in the database!");
-        }
+        } else
+            throw new ApiRequestException(StudentMessageGenerator.createStudentDoesNotExistMessage(updateStudentDTO.getFirstName(), updateStudentDTO.getLastName()));
     }
 
     @Override
-    public Boolean delete (DeleteStudentDTO deleteStudentDTO) {
-        Optional<Student> handler = this.studentRepository.findById(deleteStudentDTO.getStudentNo());
+    public Boolean delete (String studentNo) {
+        Optional<Student> handler = this.studentRepository.findById(studentNo);
         if (handler.isPresent()) {
-            this.studentRepository.delete(Objects.requireNonNull(GeneralMapper.convert(deleteStudentDTO, Student.class)));
+            this.studentRepository.delete(handler.get());
             return true;
-        } else {
-            throw new ApiRequestException("This student does not exist in the database");
-        }
+        } else
+            throw new ApiRequestException(StudentMessageGenerator.createStudentDoesNotExistMessage(studentNo));
     }
 
     @Override
@@ -87,7 +86,7 @@ public class StudentService implements IStudentService {
         if (studentHandler.isPresent())
             return this.studentLessonService.enrollLesson(studentHandler.get(), lessonHandler.get());
         else
-            throw new ApiRequestException("There is no student with given studentNo in database!");
+            throw new ApiRequestException(StudentMessageGenerator.createStudentDoesNotExistMessage(enrollLessonDTO.getStudentNo()));
     }
 
     @Override
@@ -98,7 +97,7 @@ public class StudentService implements IStudentService {
         if (studentHandler.isPresent()) {
             List<StudentLesson> studentLessons = this.studentLessonService.findStudentLessons(studentHandler.get());
             if (studentLessons.size() == 0)
-                throw new ApiRequestException("This student has no lessons in his/her enrolled lessons!");
+                throw new ApiRequestException(StudentMessageGenerator.createStudentDoesNotHaveEnrolledLessonsMessage(studentNo));
             else {
                 for (StudentLesson studentLesson : studentLessons) {
                     gradeSum += studentLesson.getLesson().getGradeNumber();
@@ -107,6 +106,6 @@ public class StudentService implements IStudentService {
                 return scoreSum / gradeSum;
             }
         } else
-            throw new ApiRequestException("There is no student with given studentNo in the database!");
+            throw new ApiRequestException(StudentMessageGenerator.createStudentDoesNotExistMessage(studentNo));
     }
 }

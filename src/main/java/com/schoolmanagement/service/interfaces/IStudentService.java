@@ -13,7 +13,7 @@ public interface IStudentService {
 
     Boolean update (UpdateStudentDTO updateStudentDTO);
 
-    Boolean delete (DeleteStudentDTO deleteStudentDTO);
+    Boolean delete (String studentNo);
 
     Boolean enrollLesson(EnrollLessonDTO enrollLessonDTO);
 
