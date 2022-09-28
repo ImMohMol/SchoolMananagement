@@ -1,5 +1,6 @@
 package com.schoolmanagement.controller;
 
+import com.schoolmanagement.constant.FacultyMessageGenerator;
 import com.schoolmanagement.constant.GeneralConstantValues;
 import com.schoolmanagement.model.Response;
 import com.schoolmanagement.model.dto.faculty.CreateFacultyDTO;
@@ -41,18 +42,23 @@ public class FacultyController {
     @PostMapping (path = "")
     public ResponseEntity<Response> createNewFaculty (@RequestBody @Valid CreateFacultyDTO createFacultyDTO) {
         this.facultyService.create(createFacultyDTO);
-        return ResponseEntity.ok(new Response(null, "Faculty created successfully!", null, true));
+        return ResponseEntity.ok(new Response(null,
+                FacultyMessageGenerator.createFacultyCreatedMessage(createFacultyDTO.getName()), null,
+                true));
     }
 
     @PutMapping (path = "")
     public ResponseEntity<Response> updateFaculty (@RequestBody @Valid UpdateFacultyDTO updateFacultyDTO) {
         this.facultyService.update(updateFacultyDTO);
-        return ResponseEntity.ok(new Response(null, "Faculty updated successfully!", null, true));
+        return ResponseEntity.ok(new Response(null,
+                FacultyMessageGenerator.createFacultyUpdatedMessage(updateFacultyDTO.getName()), null,
+                true));
     }
 
     @DeleteMapping (path = "")
-    public ResponseEntity<Response> deleteFaculty (@RequestParam ("facultyId") Long facultyId) {
-        this.facultyService.delete(facultyId);
-        return ResponseEntity.ok(new Response(null, "Faculty delete successfully!", null, true));
+    public ResponseEntity<Response> deleteFaculty (@RequestParam ("facultyName") String facultyName) {
+        this.facultyService.delete(facultyName);
+        return ResponseEntity.ok(new Response(null, FacultyMessageGenerator.createFacultyDeletedMessage(facultyName), null,
+                true));
     }
 }
