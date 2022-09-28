@@ -1,5 +1,6 @@
 package com.schoolmanagement.service.implementations;
 
+import com.schoolmanagement.constant.FacultyMessageGenerator;
 import com.schoolmanagement.exception.ApiRequestException;
 import com.schoolmanagement.model.Faculty;
 import com.schoolmanagement.model.dto.faculty.CreateFacultyDTO;
@@ -29,7 +30,7 @@ public class FacultyService implements IFacultyService {
     public Boolean create (CreateFacultyDTO createFacultyDTO) {
         Optional<Faculty> handler = this.facultyRepository.findByName(createFacultyDTO.getName());
         if (handler.isPresent()) {
-            throw new ApiRequestException("This faculty already exists in the database!");
+            throw new ApiRequestException(FacultyMessageGenerator.createDuplicateFacultyMessage(createFacultyDTO.getName()));
         } else {
             this.facultyRepository.save(GeneralMapper.convert(createFacultyDTO, Faculty.class));
             return true;
@@ -58,7 +59,7 @@ public class FacultyService implements IFacultyService {
             this.facultyRepository.save(GeneralMapper.convert(updateFacultyDTO, Faculty.class));
             return true;
         } else {
-            throw new ApiRequestException("This faculty does not exist in the database!");
+            throw new ApiRequestException(FacultyMessageGenerator.createFacultyDoesNotExists(updateFacultyDTO.getName()));
         }
     }
 
@@ -69,7 +70,7 @@ public class FacultyService implements IFacultyService {
             this.facultyRepository.delete(handler.get());
             return true;
         } else {
-            throw new ApiRequestException("There is no faculty with this id in the database!");
+            throw new ApiRequestException(FacultyMessageGenerator.createFacultyDoesNotExists(facultyId));
         }
     }
 }

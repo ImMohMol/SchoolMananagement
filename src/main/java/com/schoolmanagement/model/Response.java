@@ -31,19 +31,19 @@ public class Response {
         this.result = result;
     }
 
-    public Boolean getOk () {
-        return completed;
-    }
-
-    public void setOk (Boolean ok) {
-        completed = ok;
-    }
-
     public ApiException getException () {
         return exception;
     }
 
     public void setException (ApiException exception) {
         this.exception = exception;
+    }
+
+    public Boolean getCompleted () {
+        return completed;
+    }
+
+    public void setCompleted (Boolean completed) {
+        this.completed = completed;
     }
 }
