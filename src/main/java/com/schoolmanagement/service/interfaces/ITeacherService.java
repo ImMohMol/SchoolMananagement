@@ -19,4 +19,6 @@ public interface ITeacherService {
     Boolean delete (String personalNo);
 
     List<ReadStudentsDTO> getStudentsList (String personalNo);
+
+    Double calculateStudentsAverage(String personalNo);
 }
