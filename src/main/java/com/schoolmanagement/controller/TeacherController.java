@@ -32,6 +32,12 @@ public class TeacherController {
                 teachers, true));
     }
 
+    @GetMapping (path = "")
+    public ResponseEntity<Response> getAllTeachersPaginated (int page, int size) {
+        List<ReadTeachersDTO> teachers = this.teacherService.readPaginated(page, size);
+        return ResponseEntity.ok(new Response(null, GeneralConstantValues.SUCCESSFUL_OPERATION_MESSAGE, teachers, true));
+    }
+
     @PostMapping (path = "")
     public ResponseEntity<Response> createNewTeacher (@RequestBody @Valid CreateTeacherDTO createTeacherDTO) {
         this.teacherService.create(createTeacherDTO);

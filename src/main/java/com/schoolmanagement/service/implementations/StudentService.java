@@ -80,12 +80,12 @@ public class StudentService implements IStudentService {
     }
 
     @Override
-    public Boolean enrollLesson (EnrollLessonDTO enrollLessonDTO) {
+    public void enrollLesson (EnrollLessonDTO enrollLessonDTO) {
         Optional<Lesson> lessonHandler = this.lessonService.findLesson(enrollLessonDTO.getLessonName());
         Optional<Student> studentHandler = this.studentRepository.findByStudentNo(enrollLessonDTO.getStudentNo());
-        if (studentHandler.isPresent())
-            return this.studentLessonService.enrollLesson(studentHandler.get(), lessonHandler.get());
-        else
+        if (studentHandler.isPresent()) {
+            this.studentLessonService.enrollLesson(studentHandler.get(), lessonHandler.get());
+        } else
             throw new ApiRequestException(StudentMessageGenerator.createStudentDoesNotExistMessage(enrollLessonDTO.getStudentNo()));
     }
 

@@ -15,7 +15,7 @@ public interface IStudentService {
 
     Boolean delete (String studentNo);
 
-    Boolean enrollLesson(EnrollLessonDTO enrollLessonDTO);
+    void enrollLesson(EnrollLessonDTO enrollLessonDTO);
 
     Double calculateAverage(String studentNo);
 }
