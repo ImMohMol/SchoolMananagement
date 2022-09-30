@@ -7,14 +7,14 @@ import java.util.List;
 public class Lesson {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
     @Column (unique = true, nullable = false)
     private String name;
     @Column (nullable = false)
     private int gradeNumber;
     @OneToMany (fetch = FetchType.LAZY)
     private List<StudentLesson> students;
-    @ManyToMany (fetch = FetchType.LAZY)
+    @ManyToMany (fetch = FetchType.LAZY, mappedBy = "lessons")
     private List<Teacher> teachers;
 
     public Long getId () {

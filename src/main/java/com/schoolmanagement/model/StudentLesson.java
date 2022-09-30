@@ -6,7 +6,7 @@ import javax.persistence.*;
 public class StudentLesson {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
     @ManyToOne (fetch = FetchType.LAZY)
     private Student student;
     @ManyToOne (fetch = FetchType.LAZY)

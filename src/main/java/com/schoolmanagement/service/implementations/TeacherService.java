@@ -33,7 +33,7 @@ public class TeacherService implements ITeacherService {
 
     @Override
     public Boolean create (CreateTeacherDTO createTeacherDTO) {
-        Optional<Teacher> handler = this.teacherRepository.findById(createTeacherDTO.getPersonalNo());
+        Optional<Teacher> handler = this.teacherRepository.findByPersonalNo(createTeacherDTO.getPersonalNo());
         if (handler.isPresent()) {
             throw new ApiRequestException(TeacherMessageGenerator.createTeacherExistsMessage(createTeacherDTO.getFirstName(), createTeacherDTO.getLastName()));
         } else {
@@ -59,7 +59,7 @@ public class TeacherService implements ITeacherService {
 
     @Override
     public Boolean update (UpdateTeacherDTO updateTeacherDTO) {
-        Optional<Teacher> handler = this.teacherRepository.findById(updateTeacherDTO.getPersonalNo());
+        Optional<Teacher> handler = this.teacherRepository.findByPersonalNo(updateTeacherDTO.getPersonalNo());
         if (handler.isPresent()) {
             this.teacherRepository.save(GeneralMapper.convert(updateTeacherDTO, Teacher.class));
             return true;
@@ -70,7 +70,7 @@ public class TeacherService implements ITeacherService {
 
     @Override
     public Boolean delete (String personalNo) {
-        Optional<Teacher> handler = this.teacherRepository.findById(personalNo);
+        Optional<Teacher> handler = this.teacherRepository.findByPersonalNo(personalNo);
         if (handler.isPresent()) {
             this.teacherRepository.delete(handler.get());
             return true;
@@ -81,7 +81,7 @@ public class TeacherService implements ITeacherService {
 
     @Override
     public List<ReadStudentsDTO> getStudentsList (String personalNo) {
-        Optional<Teacher> teacherHandler = this.teacherRepository.findById(personalNo);
+        Optional<Teacher> teacherHandler = this.teacherRepository.findByPersonalNo(personalNo);
         if (teacherHandler.isPresent()) {
             List<ReadStudentsDTO> students = new ArrayList<>();
             teacherHandler.get().getStudents().forEach((student -> students.add(GeneralMapper.convert(student, ReadStudentsDTO.class))));
@@ -92,7 +92,7 @@ public class TeacherService implements ITeacherService {
 
     @Override
     public Double calculateStudentsAverage (String personalNo) {
-        Optional<Teacher> teacherHandler = this.teacherRepository.findById(personalNo);
+        Optional<Teacher> teacherHandler = this.teacherRepository.findByPersonalNo(personalNo);
         if (teacherHandler.isPresent()) {
             double result = 0.0;
             List<Student> students = teacherHandler.get().getStudents();

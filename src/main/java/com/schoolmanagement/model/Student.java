@@ -7,6 +7,8 @@ import java.util.Objects;
 @Entity
 public class Student {
     @Id
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    private long id;
     @Column (unique = true, nullable = false, length = 7)
     private String studentNo;
     @Column (nullable = false)
@@ -17,8 +19,16 @@ public class Student {
     private String nationalCode;
     @OneToMany (fetch = FetchType.LAZY)
     private List<StudentLesson> lessons;
-    @ManyToMany (fetch = FetchType.LAZY)
+    @ManyToMany (fetch = FetchType.LAZY, mappedBy = "students")
     private List<Teacher> teachers;
+
+    public long getId () {
+        return id;
+    }
+
+    public void setId (long id) {
+        this.id = id;
+    }
 
     public String getStudentNo () {
         return studentNo;

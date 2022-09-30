@@ -61,7 +61,7 @@ public class StudentService implements IStudentService {
 
     @Override
     public Boolean update (UpdateStudentDTO updateStudentDTO) {
-        Optional<Student> handler = this.studentRepository.findById(updateStudentDTO.getStudentNo());
+        Optional<Student> handler = this.studentRepository.findByStudentNo(updateStudentDTO.getStudentNo());
         if (handler.isPresent()) {
             this.studentRepository.save(Objects.requireNonNull(GeneralMapper.convert(updateStudentDTO, Student.class)));
             return true;
@@ -71,7 +71,7 @@ public class StudentService implements IStudentService {
 
     @Override
     public Boolean delete (String studentNo) {
-        Optional<Student> handler = this.studentRepository.findById(studentNo);
+        Optional<Student> handler = this.studentRepository.findByStudentNo(studentNo);
         if (handler.isPresent()) {
             this.studentRepository.delete(handler.get());
             return true;
@@ -82,7 +82,7 @@ public class StudentService implements IStudentService {
     @Override
     public Boolean enrollLesson (EnrollLessonDTO enrollLessonDTO) {
         Optional<Lesson> lessonHandler = this.lessonService.findLesson(enrollLessonDTO.getLessonName());
-        Optional<Student> studentHandler = this.studentRepository.findById(enrollLessonDTO.getStudentNo());
+        Optional<Student> studentHandler = this.studentRepository.findByStudentNo(enrollLessonDTO.getStudentNo());
         if (studentHandler.isPresent())
             return this.studentLessonService.enrollLesson(studentHandler.get(), lessonHandler.get());
         else
@@ -91,7 +91,7 @@ public class StudentService implements IStudentService {
 
     @Override
     public Double calculateAverage (String studentNo) {
-        Optional<Student> studentHandler = this.studentRepository.findById(studentNo);
+        Optional<Student> studentHandler = this.studentRepository.findByStudentNo(studentNo);
         double scoreSum = 0.0;
         int gradeSum = 0;
         if (studentHandler.isPresent()) {

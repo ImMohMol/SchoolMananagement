@@ -6,6 +6,8 @@ import java.util.List;
 @Entity
 public class Teacher {
     @Id
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    private long id;
     @Column (unique = true, nullable = false)
     private String personalNo;
     @Column (nullable = false)
@@ -15,13 +17,21 @@ public class Teacher {
     @Column (unique = true, nullable = false, length = 10)
     private String nationalCode;
     @ManyToMany (fetch = FetchType.LAZY)
-    @JoinTable (name = "teacher_lessons", joinColumns = @JoinColumn (name = "personal_no"), inverseJoinColumns =
+    @JoinTable (name = "teacher_lessons", joinColumns = @JoinColumn (name = "teacher_id"), inverseJoinColumns =
     @JoinColumn (name = "lesson_id"))
     private List<Lesson> lessons;
     @ManyToMany (fetch = FetchType.LAZY)
-    @JoinTable (name = "teacher_students", joinColumns = @JoinColumn (name = "personal_no"), inverseJoinColumns =
-    @JoinColumn (name = "student_no"))
+    @JoinTable (name = "teacher_students", joinColumns = @JoinColumn (name = "teacher_id"), inverseJoinColumns =
+    @JoinColumn (name = "student_id"))
     private List<Student> students;
+
+    public long getId () {
+        return id;
+    }
+
+    public void setId (long id) {
+        this.id = id;
+    }
 
     public String getPersonalNo () {
         return personalNo;
