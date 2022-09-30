@@ -32,7 +32,7 @@ public class TeacherController {
                 teachers, true));
     }
 
-    @GetMapping (path = "")
+    @GetMapping (path = "/paginated")
     public ResponseEntity<Response> getAllTeachersPaginated (int page, int size) {
         List<ReadTeachersDTO> teachers = this.teacherService.readPaginated(page, size);
         return ResponseEntity.ok(new Response(null, GeneralConstantValues.SUCCESSFUL_OPERATION_MESSAGE, teachers, true));
