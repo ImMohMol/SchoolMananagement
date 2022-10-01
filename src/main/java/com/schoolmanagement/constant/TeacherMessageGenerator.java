@@ -24,4 +24,8 @@ public class TeacherMessageGenerator {
     public static String createTeacherDeletedMessage (String personalNO) {
         return String.format("Teacher with personalNo (%s) deleted successfully!", personalNO);
     }
+
+    public static String createTeacherHasNoStudentsMessage (String personalNo) {
+        return String.format("Teacher with personalNo (%s) has no students!", personalNo);
+    }
 }
