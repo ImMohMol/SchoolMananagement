@@ -2,19 +2,17 @@ package com.schoolmanagement.exception;
 
 import org.springframework.http.HttpStatus;
 
-import java.time.ZonedDateTime;
-
 public class ApiException {
     private final String message;
     private final HttpStatus httpStatus;
-    private final ZonedDateTime timeStamp;
+    private final String time;
 
     public ApiException (String message,
                          HttpStatus httpStatus,
-                         ZonedDateTime timeStamp) {
+                         String time) {
         this.message = message;
         this.httpStatus = httpStatus;
-        this.timeStamp = timeStamp;
+        this.time = time;
     }
 
     public String getMessage () {
@@ -25,7 +23,7 @@ public class ApiException {
         return httpStatus;
     }
 
-    public ZonedDateTime getTimeStamp () {
-        return timeStamp;
+    public String getTimeStamp () {
+        return time;
     }
 }

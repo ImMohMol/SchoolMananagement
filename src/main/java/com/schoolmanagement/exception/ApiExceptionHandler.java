@@ -13,8 +13,11 @@ import java.time.ZonedDateTime;
 public class ApiExceptionHandler {
     @ExceptionHandler (value = {ApiRequestException.class})
     public ResponseEntity<Response> handleApiException (ApiRequestException apiRequestException) {
-        ApiException exception = new ApiException(apiRequestException.getMessage(), HttpStatus.BAD_REQUEST,
-                ZonedDateTime.now(ZoneId.of("Z")));
+        ApiException exception = new ApiException(apiRequestException.getMessage(), HttpStatus.BAD_REQUEST, getTime(ZonedDateTime.now(ZoneId.of("Asia/Tehran"))));
         return ResponseEntity.badRequest().body(new Response(exception, apiRequestException.getMessage(), null, false));
+    }
+
+    private String getTime (ZonedDateTime now) {
+        return now.getHour() + ":" + now.getMinute() + ":" + now.getSecond();
     }
 }
