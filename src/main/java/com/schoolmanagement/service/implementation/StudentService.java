@@ -1,4 +1,4 @@
-package com.schoolmanagement.service.implementations;
+package com.schoolmanagement.service.implementation;
 
 import com.schoolmanagement.constant.StudentMessageGenerator;
 import com.schoolmanagement.exception.ApiRequestException;
