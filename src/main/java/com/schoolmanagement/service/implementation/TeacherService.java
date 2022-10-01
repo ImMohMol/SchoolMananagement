@@ -1,6 +1,7 @@
 package com.schoolmanagement.service.implementation;
 
 import com.schoolmanagement.constant.TeacherMessageGenerator;
+import com.schoolmanagement.constant.Utils;
 import com.schoolmanagement.exception.ApiRequestException;
 import com.schoolmanagement.model.Student;
 import com.schoolmanagement.model.Teacher;
@@ -86,8 +87,7 @@ public class TeacherService implements ITeacherService {
             List<ReadStudentsDTO> students = new ArrayList<>();
             teacherHandler.get().getStudents().forEach((student -> students.add(GeneralMapper.convert(student, ReadStudentsDTO.class))));
             return students;
-        } else
-            throw new ApiRequestException(TeacherMessageGenerator.createTeacherDoesNotExistMessage(personalNo));
+        } else throw new ApiRequestException(TeacherMessageGenerator.createTeacherDoesNotExistMessage(personalNo));
     }
 
     @Override
@@ -96,10 +96,12 @@ public class TeacherService implements ITeacherService {
         if (teacherHandler.isPresent()) {
             double result = 0.0;
             List<Student> students = teacherHandler.get().getStudents();
-            for (Student student : students)
-                result += this.studentService.calculateAverage(student.getStudentNo());
-            return result / students.size();
-        } else
-            throw new ApiRequestException(TeacherMessageGenerator.createTeacherDoesNotExistMessage(personalNo));
+            if (students.size() != 0) {
+                for (Student student : students)
+                    result += this.studentService.calculateAverage(student.getStudentNo());
+                return Utils.formatDoubleNumber(result / students.size());
+            } else
+                throw new ApiRequestException(TeacherMessageGenerator.createTeacherHasNoStudentsMessage(personalNo));
+        } else throw new ApiRequestException(TeacherMessageGenerator.createTeacherDoesNotExistMessage(personalNo));
     }
 }

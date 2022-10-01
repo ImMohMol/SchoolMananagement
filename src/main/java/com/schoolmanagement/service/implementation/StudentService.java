@@ -1,12 +1,16 @@
 package com.schoolmanagement.service.implementation;
 
 import com.schoolmanagement.constant.StudentMessageGenerator;
+import com.schoolmanagement.constant.Utils;
 import com.schoolmanagement.exception.ApiRequestException;
 import com.schoolmanagement.model.Lesson;
 import com.schoolmanagement.model.Student;
 import com.schoolmanagement.model.StudentLesson;
 import com.schoolmanagement.model.dto.mapper.GeneralMapper;
-import com.schoolmanagement.model.dto.student.*;
+import com.schoolmanagement.model.dto.student.CreateStudentDTO;
+import com.schoolmanagement.model.dto.student.EnrollLessonDTO;
+import com.schoolmanagement.model.dto.student.ReadStudentsDTO;
+import com.schoolmanagement.model.dto.student.UpdateStudentDTO;
 import com.schoolmanagement.repository.IStudentRepository;
 import com.schoolmanagement.service.interfaces.ILessonService;
 import com.schoolmanagement.service.interfaces.IStudentLessonService;
@@ -103,7 +107,7 @@ public class StudentService implements IStudentService {
                     gradeSum += studentLesson.getLesson().getGradeNumber();
                     scoreSum += (studentLesson.getScore() * studentLesson.getLesson().getGradeNumber());
                 }
-                return scoreSum / gradeSum;
+                return Utils.formatDoubleNumber(scoreSum / gradeSum);
             }
         } else
             throw new ApiRequestException(StudentMessageGenerator.createStudentDoesNotExistMessage(studentNo));
