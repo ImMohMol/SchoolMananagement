@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @RestController
@@ -58,7 +59,7 @@ public class TeacherController {
     }
 
     @DeleteMapping (path = "")
-    public ResponseEntity<Response> deleteTeacher (@RequestParam (name = "personalNo") String personalNo) {
+    public ResponseEntity<Response> deleteTeacher (@RequestParam (name = "personalNo") @NotBlank String personalNo) {
         this.teacherService.delete(personalNo);
         return ResponseEntity.ok(new Response(null, TeacherMessageGenerator.createTeacherDeletedMessage(personalNo), null,
                 true));

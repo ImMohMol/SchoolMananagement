@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 public class StudentLessonService implements IStudentLessonService {
-    private IStudentLessonRepository studentLessonRepository;
+    private final IStudentLessonRepository studentLessonRepository;
 
     @Autowired
     public StudentLessonService (IStudentLessonRepository studentLessonRepository) {
