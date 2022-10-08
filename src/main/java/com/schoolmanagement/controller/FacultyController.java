@@ -9,6 +9,7 @@ import com.schoolmanagement.model.dto.faculty.UpdateFacultyDTO;
 import com.schoolmanagement.service.interfaces.IFacultyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,6 +26,7 @@ public class FacultyController {
     }
 
     @GetMapping (path = "")
+    @PreAuthorize ("hasAuthority('faculty:read')")
     public ResponseEntity<Response> getAllFaculties () {
         List<ReadFacultiesDTO> receivedFaculties = this.facultyService.read();
         return ResponseEntity.ok(new Response(null, GeneralConstantValues.SUCCESSFUL_OPERATION_MESSAGE,
@@ -32,6 +34,7 @@ public class FacultyController {
     }
 
     @GetMapping ("/paginated")
+    @PreAuthorize ("hasAuthority('faculty:read')")
     public ResponseEntity<Response> getAllFacultiesPaginated (@RequestParam ("page") int page,
                                                               @RequestParam ("size") int size) {
         List<ReadFacultiesDTO> faculties = this.facultyService.readPaginated(page, size);
@@ -40,6 +43,7 @@ public class FacultyController {
     }
 
     @PostMapping (path = "")
+    @PreAuthorize ("hasAuthority('faculty:write')")
     public ResponseEntity<Response> createNewFaculty (@RequestBody @Valid CreateFacultyDTO createFacultyDTO) {
         this.facultyService.create(createFacultyDTO);
         return ResponseEntity.ok(new Response(null,
@@ -48,6 +52,7 @@ public class FacultyController {
     }
 
     @PutMapping (path = "")
+    @PreAuthorize ("hasAuthority('faculty:write')")
     public ResponseEntity<Response> updateFaculty (@RequestBody @Valid UpdateFacultyDTO updateFacultyDTO) {
         this.facultyService.update(updateFacultyDTO);
         return ResponseEntity.ok(new Response(null,
@@ -56,6 +61,7 @@ public class FacultyController {
     }
 
     @DeleteMapping (path = "")
+    @PreAuthorize ("hasAuthority('faculty:write')")
     public ResponseEntity<Response> deleteFaculty (@RequestParam ("facultyName") String facultyName) {
         this.facultyService.delete(facultyName);
         return ResponseEntity.ok(new Response(null, FacultyMessageGenerator.createFacultyDeletedMessage(facultyName), null,

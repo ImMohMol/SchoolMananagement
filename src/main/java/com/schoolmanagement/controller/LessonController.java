@@ -9,6 +9,7 @@ import com.schoolmanagement.model.dto.lesson.UpdateLessonDTO;
 import com.schoolmanagement.service.interfaces.ILessonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,12 +26,14 @@ public class LessonController {
     }
 
     @GetMapping (path = "")
+    @PreAuthorize ("hasAuthority('lesson:read')")
     public ResponseEntity<Response> getAllLessons () {
         List<ReadLessonsDTO> result = this.lessonService.read();
         return ResponseEntity.ok(new Response(null, GeneralConstantValues.SUCCESSFUL_OPERATION_MESSAGE, result, true));
     }
 
     @GetMapping ("/paginated")
+    @PreAuthorize ("hasAuthority('lesson:read')")
     public ResponseEntity<Response> getAllLessonsPaginated (@RequestParam ("page") int page,
                                                             @RequestParam ("size") int size) {
         List<ReadLessonsDTO> lessons = this.lessonService.readPaginated(page, size);
@@ -38,6 +41,7 @@ public class LessonController {
     }
 
     @PostMapping (path = "")
+    @PreAuthorize ("hasAuthority('lesson:write')")
     public ResponseEntity<Response> createNewLesson (@RequestBody @Valid CreateLessonDTO createLessonDTO) {
         this.lessonService.create(createLessonDTO);
         return ResponseEntity.ok(new Response(null,
@@ -46,6 +50,7 @@ public class LessonController {
     }
 
     @PutMapping (path = "")
+    @PreAuthorize ("hasAuthority('lesson:write')")
     public ResponseEntity<Response> updateLesson (@RequestBody @Valid UpdateLessonDTO updateLessonDTO) {
         this.lessonService.update(updateLessonDTO);
         return ResponseEntity.ok(new Response(null,
@@ -54,6 +59,7 @@ public class LessonController {
     }
 
     @DeleteMapping (path = "")
+    @PreAuthorize ("hasAuthority('lesson:write')")
     public ResponseEntity<Response> deleteLesson (@RequestParam (name = "lessonName") String lessonName) {
         this.lessonService.delete(lessonName);
         return ResponseEntity.ok(new Response(null, LessonMessageGenerator.createLessonDeletedMessage(lessonName), null,
