@@ -3,21 +3,20 @@ package com.schoolmanagement.model;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import java.util.Collection;
 import java.util.Set;
 
+@MappedSuperclass
 public class ApplicationUser implements UserDetails {
-    private final Set<? extends GrantedAuthority> grantedAuthorities;
-    private final String username;
-    private final String password;
-
-    public ApplicationUser (Set<? extends GrantedAuthority> grantedAuthorities,
-                            String username,
-                            String password) {
-        this.grantedAuthorities = grantedAuthorities;
-        this.username = username;
-        this.password = password;
-    }
+    @Transient
+    private Set<? extends GrantedAuthority> grantedAuthorities;
+    @Column (nullable = false, unique = true, length = 100)
+    private String username;
+    @Column (nullable = false, length = 30)
+    private String password;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities () {
