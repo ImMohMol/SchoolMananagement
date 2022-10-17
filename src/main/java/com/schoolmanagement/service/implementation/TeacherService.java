@@ -17,9 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @Service
 public class TeacherService implements ITeacherService {
@@ -45,17 +46,17 @@ public class TeacherService implements ITeacherService {
 
     @Override
     public List<ReadTeachersDTO> read () {
-        List<ReadTeachersDTO> receivedTeachers = new ArrayList<>();
-        this.teacherRepository.findAll().forEach((teacher -> receivedTeachers.add(GeneralMapper.convert(teacher, ReadTeachersDTO.class))));
-        return receivedTeachers;
+        return this.teacherRepository.findAll().stream()
+                .map(teacher -> (ReadTeachersDTO) GeneralMapper.convert(teacher, ReadTeachersDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<ReadTeachersDTO> readPaginated (int page, int size) {
         List<Teacher> teachers = this.teacherRepository.findAll(PageRequest.of(page, size)).toList();
-        List<ReadTeachersDTO> result = new ArrayList<>();
-        teachers.forEach((teacher -> result.add(GeneralMapper.convert(teacher, ReadTeachersDTO.class))));
-        return result;
+        return teachers.stream()
+                .map(teacher -> (ReadTeachersDTO) GeneralMapper.convert(teacher, ReadTeachersDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -84,22 +85,24 @@ public class TeacherService implements ITeacherService {
     public List<ReadStudentsDTO> getStudentsList (String personalNo) {
         Optional<Teacher> teacherHandler = this.teacherRepository.findByPersonalNo(personalNo);
         if (teacherHandler.isPresent()) {
-            List<ReadStudentsDTO> students = new ArrayList<>();
-            teacherHandler.get().getStudents().forEach((student -> students.add(GeneralMapper.convert(student, ReadStudentsDTO.class))));
-            return students;
-        } else throw new ApiRequestException(TeacherMessageGenerator.createTeacherDoesNotExistMessage(personalNo));
+            return teacherHandler.get().getStudents().stream()
+                    .map(student -> (ReadStudentsDTO) GeneralMapper.convert(student, ReadStudentsDTO.class))
+                    .collect(Collectors.toList());
+        } else {
+            throw new ApiRequestException(TeacherMessageGenerator.createTeacherDoesNotExistMessage(personalNo));
+        }
     }
 
     @Override
     public Double calculateStudentsAverage (String personalNo) {
         Optional<Teacher> teacherHandler = this.teacherRepository.findByPersonalNo(personalNo);
         if (teacherHandler.isPresent()) {
-            double result = 0.0;
+            AtomicReference<Double> result = new AtomicReference<>(0.0);
             List<Student> students = teacherHandler.get().getStudents();
             if (students.size() != 0) {
-                for (Student student : students)
-                    result += this.studentService.calculateAverage(student.getStudentNo());
-                return Utils.formatDoubleNumber(result / students.size());
+                students.stream()
+                        .peek(student -> result.updateAndGet(v -> v + this.studentService.calculateAverage(student.getStudentNo())));
+                return Utils.formatDoubleNumber(result.get() / students.size());
             } else
                 throw new ApiRequestException(TeacherMessageGenerator.createTeacherHasNoStudentsMessage(personalNo));
         } else throw new ApiRequestException(TeacherMessageGenerator.createTeacherDoesNotExistMessage(personalNo));
