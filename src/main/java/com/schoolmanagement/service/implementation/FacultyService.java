@@ -13,9 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FacultyService implements IFacultyService {
@@ -39,17 +39,17 @@ public class FacultyService implements IFacultyService {
 
     @Override
     public List<ReadFacultiesDTO> read () {
-        List<ReadFacultiesDTO> receivedFaculties = new ArrayList<>();
-        this.facultyRepository.findAll().forEach(faculty -> receivedFaculties.add(GeneralMapper.convert(faculty, ReadFacultiesDTO.class)));
-        return receivedFaculties;
+        return this.facultyRepository.findAll().stream()
+                .map(faculty -> ((ReadFacultiesDTO) GeneralMapper.convert(faculty, ReadFacultiesDTO.class)))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<ReadFacultiesDTO> readPaginated (int page, int size) {
         List<Faculty> faculties = this.facultyRepository.findAll(PageRequest.of(page, size)).toList();
-        List<ReadFacultiesDTO> result = new ArrayList<>();
-        faculties.forEach((faculty -> result.add(GeneralMapper.convert(faculty, ReadFacultiesDTO.class))));
-        return result;
+        return faculties.stream()
+                .map(faculty -> (ReadFacultiesDTO) GeneralMapper.convert(faculty, ReadFacultiesDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
