@@ -19,10 +19,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService implements IStudentService {
@@ -50,17 +52,18 @@ public class StudentService implements IStudentService {
 
     @Override
     public List<ReadStudentsDTO> read () {
-        List<ReadStudentsDTO> receivedStudents = new ArrayList<>();
-        this.studentRepository.findAll().forEach((student -> receivedStudents.add(GeneralMapper.convert(student, ReadStudentsDTO.class))));
-        return receivedStudents;
+        return this.studentRepository.findAll()
+                .stream()
+                .map(student -> (ReadStudentsDTO) GeneralMapper.convert(student, ReadStudentsDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<ReadStudentsDTO> readPaginated (int page, int size) {
         List<Student> students = this.studentRepository.findAll(PageRequest.of(page, size)).toList();
-        List<ReadStudentsDTO> result = new ArrayList<>();
-        students.forEach((student -> result.add(GeneralMapper.convert(student, ReadStudentsDTO.class))));
-        return result;
+        return students.stream()
+                .map(student -> (ReadStudentsDTO) GeneralMapper.convert(student, ReadStudentsDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -96,18 +99,18 @@ public class StudentService implements IStudentService {
     @Override
     public Double calculateAverage (String studentNo) {
         Optional<Student> studentHandler = this.studentRepository.findByStudentNo(studentNo);
-        double scoreSum = 0.0;
-        int gradeSum = 0;
+        AtomicReference<Double> scoreSum = new AtomicReference<>(0.0);
+        AtomicInteger gradeSum = new AtomicInteger();
         if (studentHandler.isPresent()) {
             List<StudentLesson> studentLessons = this.studentLessonService.findStudentLessons(studentHandler.get());
             if (studentLessons.size() == 0)
                 throw new ApiRequestException(StudentMessageGenerator.createStudentDoesNotHaveEnrolledLessonsMessage(studentNo));
             else {
-                for (StudentLesson studentLesson : studentLessons) {
-                    gradeSum += studentLesson.getLesson().getGradeNumber();
-                    scoreSum += (studentLesson.getScore() * studentLesson.getLesson().getGradeNumber());
-                }
-                return Utils.formatDoubleNumber(scoreSum / gradeSum);
+                studentLessons.forEach(studentLesson -> {
+                    gradeSum.addAndGet(studentLesson.getLesson().getGradeNumber());
+                    scoreSum.updateAndGet(v -> v + studentLesson.getScore() * studentLesson.getLesson().getGradeNumber());
+                });
+                return Utils.formatDoubleNumber(scoreSum.get() / gradeSum.get());
             }
         } else
             throw new ApiRequestException(StudentMessageGenerator.createStudentDoesNotExistMessage(studentNo));
