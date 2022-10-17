@@ -13,9 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class LessonService implements ILessonService {
@@ -39,17 +39,18 @@ public class LessonService implements ILessonService {
 
     @Override
     public List<ReadLessonsDTO> read () {
-        List<ReadLessonsDTO> receivedLessons = new ArrayList<>();
-        this.lessonRepository.findAll().forEach((lesson -> receivedLessons.add(GeneralMapper.convert(lesson, ReadLessonsDTO.class))));
-        return receivedLessons;
+        return this.lessonRepository.findAll()
+                .stream()
+                .map(lesson -> (ReadLessonsDTO) GeneralMapper.convert(lesson, ReadLessonsDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<ReadLessonsDTO> readPaginated (int page, int size) {
         List<Lesson> lessons = this.lessonRepository.findAll(PageRequest.of(page, size)).toList();
-        List<ReadLessonsDTO> result = new ArrayList<>();
-        lessons.forEach((lesson -> result.add(GeneralMapper.convert(lesson, ReadLessonsDTO.class))));
-        return result;
+        return lessons.stream()
+                .map(lesson -> (ReadLessonsDTO) GeneralMapper.convert(lesson, ReadLessonsDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
