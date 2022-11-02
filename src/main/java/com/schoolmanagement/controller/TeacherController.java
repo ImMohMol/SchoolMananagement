@@ -1,7 +1,7 @@
 package com.schoolmanagement.controller;
 
-import com.schoolmanagement.constant.GeneralConstantValues;
-import com.schoolmanagement.constant.TeacherMessageGenerator;
+import com.schoolmanagement.utils.GeneralConstantValues;
+import com.schoolmanagement.utils.TeacherMessageGenerator;
 import com.schoolmanagement.model.Response;
 import com.schoolmanagement.model.dto.student.ReadStudentsDTO;
 import com.schoolmanagement.model.dto.teacher.CreateTeacherDTO;

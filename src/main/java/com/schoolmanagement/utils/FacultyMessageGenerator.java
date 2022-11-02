@@ -1,4 +1,4 @@
-package com.schoolmanagement.constant;
+package com.schoolmanagement.utils;
 
 public class FacultyMessageGenerator {
     public static String createDuplicateFacultyMessage (String facultyName) {

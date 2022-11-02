@@ -1,7 +1,7 @@
 package com.schoolmanagement.controller;
 
-import com.schoolmanagement.constant.FacultyMessageGenerator;
-import com.schoolmanagement.constant.GeneralConstantValues;
+import com.schoolmanagement.utils.FacultyMessageGenerator;
+import com.schoolmanagement.utils.GeneralConstantValues;
 import com.schoolmanagement.model.Response;
 import com.schoolmanagement.model.dto.faculty.CreateFacultyDTO;
 import com.schoolmanagement.model.dto.faculty.ReadFacultiesDTO;
@@ -33,10 +33,10 @@ public class FacultyController {
                 receivedFaculties, true));
     }
 
-    @GetMapping ("/paginated")
+    @GetMapping ("/paginated/{page}/{size}")
     @PreAuthorize ("hasAuthority('faculty:read')")
-    public ResponseEntity<Response> getAllFacultiesPaginated (@RequestParam ("page") int page,
-                                                              @RequestParam ("size") int size) {
+    public ResponseEntity<Response> getAllFacultiesPaginated (@PathVariable (name = "page") int page,
+                                                              @PathVariable (name = "size") int size) {
         List<ReadFacultiesDTO> faculties = this.facultyService.readPaginated(page, size);
         return ResponseEntity.ok(new Response(null, GeneralConstantValues.SUCCESSFUL_OPERATION_MESSAGE, faculties,
                 true));
@@ -60,9 +60,9 @@ public class FacultyController {
                 true));
     }
 
-    @DeleteMapping (path = "")
+    @DeleteMapping (path = "/{facultyName}")
     @PreAuthorize ("hasAuthority('faculty:write')")
-    public ResponseEntity<Response> deleteFaculty (@RequestParam ("facultyName") String facultyName) {
+    public ResponseEntity<Response> deleteFaculty (@PathVariable (name = "facultyName") String facultyName) {
         this.facultyService.delete(facultyName);
         return ResponseEntity.ok(new Response(null, FacultyMessageGenerator.createFacultyDeletedMessage(facultyName), null,
                 true));

@@ -1,4 +1,4 @@
-package com.schoolmanagement.constant;
+package com.schoolmanagement.utils;
 
 public class GeneralConstantValues {
     public static final String SUCCESSFUL_OPERATION_MESSAGE = "Operation completed successfully!";

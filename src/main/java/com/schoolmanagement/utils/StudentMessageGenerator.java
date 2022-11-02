@@ -1,4 +1,4 @@
-package com.schoolmanagement.constant;
+package com.schoolmanagement.utils;
 
 public class StudentMessageGenerator {
     public static String createStudentExistsMessage (String firstName, String lastName) {

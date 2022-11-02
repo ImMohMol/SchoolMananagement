@@ -1,6 +1,6 @@
 package com.schoolmanagement.service.implementation;
 
-import com.schoolmanagement.constant.FacultyMessageGenerator;
+import com.schoolmanagement.utils.FacultyMessageGenerator;
 import com.schoolmanagement.exception.ApiRequestException;
 import com.schoolmanagement.model.Faculty;
 import com.schoolmanagement.model.dto.faculty.CreateFacultyDTO;

@@ -1,6 +1,6 @@
 package com.schoolmanagement.service.implementation;
 
-import com.schoolmanagement.constant.LessonMessageGenerator;
+import com.schoolmanagement.utils.LessonMessageGenerator;
 import com.schoolmanagement.exception.ApiRequestException;
 import com.schoolmanagement.model.Lesson;
 import com.schoolmanagement.model.dto.lesson.CreateLessonDTO;

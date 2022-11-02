@@ -1,4 +1,4 @@
-package com.schoolmanagement.constant;
+package com.schoolmanagement.utils;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;

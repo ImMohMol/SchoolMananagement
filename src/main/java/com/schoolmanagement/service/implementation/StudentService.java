@@ -1,7 +1,7 @@
 package com.schoolmanagement.service.implementation;
 
-import com.schoolmanagement.constant.StudentMessageGenerator;
-import com.schoolmanagement.constant.Utils;
+import com.schoolmanagement.utils.StudentMessageGenerator;
+import com.schoolmanagement.utils.Utils;
 import com.schoolmanagement.exception.ApiRequestException;
 import com.schoolmanagement.model.Lesson;
 import com.schoolmanagement.model.Student;
